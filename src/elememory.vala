@@ -33,8 +33,8 @@ public class elememoryApp : Granite.Application {
         main_url = "https://github.com/Heiko-M/elememory";
         bug_url "https://github.com/Heiko-M/elememory/issues";
         translate_url = "https://github.com/Heiko-M/elememory";
-        about_authors = {"Heiko Müller"};
-        about_artists = {"Heiko Müller"};
+        about_authors = {"Heiko Müller <mue.heiko@web.de>"};
+        about_artists = {"Heiko Müller <mue.heiko@web.de>"};
         about_license_type = Gtk.License.GPL_3_0;
         about_comments = "A small memory game app for elementary OS.";
     }
