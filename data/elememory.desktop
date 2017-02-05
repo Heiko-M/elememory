@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=eleMemory
+GenericName=Memory game
+Comment=Play memory
+Categories=Game;BoardGame;KidsGame;GTK;
+Exec=elememory
+Icon=application-default-icon
+Terminal=false
+Type=Application
+X-GNOME-Gettext-Domain=elememory
+Keywords=Cognitive;

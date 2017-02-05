@@ -28,11 +28,11 @@ public class elememoryApp : Granite.Application {
         build_version = "0.1a";
         build_version_info = "Alpha version"
         app_launcher = "elememory.desktop";
-        //app_icon = "";
+        app_icon = "application-default-icon";
         application_id = "elememory.app";
-        //main_url = "";
-        //bug_url "";
-        //translate_url = "";
+        main_url = "https://github.com/Heiko-M/elememory";
+        bug_url "https://github.com/Heiko-M/elememory/issues";
+        translate_url = "https://github.com/Heiko-M/elememory";
         about_authors = {"Heiko Müller"};
         about_artists = {"Heiko Müller"};
         about_license_type = Gtk.License.GPL_3_0;
