@@ -16,6 +16,11 @@ set (VERSION_INFO "Alpha version")
 
 find_package (PkgConfig)
 
+pkg_check_modules (DEPS REQUIRED
+                   gtk+-3.0
+                   granite
+                  )
+
 add_definitions (${DEPS_CFLAGS})
 link_libraries (${DEPS_LIBRARIES})
 link_directories (${DEPS_LIBRARY_DIRS})
@@ -39,6 +44,8 @@ vala_precompile (VALA_C ${EXEC_NAME}
                 )
 
 add_executable (${EXEC_NAME} ${VALA_C})
+
+add_subdirectory (images)
 
 install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
 
