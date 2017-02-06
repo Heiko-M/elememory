@@ -46,6 +46,7 @@ vala_precompile (VALA_C ${EXEC_NAME}
 add_executable (${EXEC_NAME} ${VALA_C})
 
 add_subdirectory (images)
+add_subdirectory (icons)
 
 install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
 
