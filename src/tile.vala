@@ -22,9 +22,11 @@ public class Tile : Gtk.EventBox {
     private int motif_id;
     private Image motif = new Image ();
     private Image backside = new Image ();
+    private bool present_in_game;           //XXX: Necessary?
 
     public Tile (int motif_id, string motif_img_path, string backside_img_path) {
         this.motif_id = motif_id;
+        present_in_game = true;
 
         motif.set_from_file (motif_img_path);
         motif.show ();
@@ -47,11 +49,20 @@ public class Tile : Gtk.EventBox {
             add (motif);
             set_sensitive (false);       // An exposed tile should not react to further clicking.
         }
-        else {
+        else if (get_child () == motif) {
             remove (motif);
             add (backside);
             set_sensitive (true);
         }
+    }
+
+    public void remove_from_playing_field () {
+        /** Removes the visible representation of this tile. **/
+        // XXX: It remains in the grid so no columns or rows disappear, but it's
+        //      invisible and insensitive to mouse clicks.
+        remove( get_child ());
+        present_in_game = false;
+        set_sensitive (false);
     }
 
     public bool pairs_with (Tile query_tile) {

@@ -84,9 +84,8 @@ public class PlayingField : Gtk.Grid {
          **/
         if (tile_exposed.pairs_with (tile_turned)) {
             pairs_found += 1;
-            // FIXME: Find a way so that button remains in box (i.e. no rescaling of the box), maybe just display no image on tiles.
-            tile_exposed.set_visible (false);
-            tile_turned.set_visible (false);
+            tile_exposed.remove_from_playing_field ();
+            tile_turned.remove_from_playing_field ();
         }
         else {
             tile_exposed.flip ();
