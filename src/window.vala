@@ -33,7 +33,7 @@ public class Window : Gtk.Window {
         var header = new Header ("eleMemory");
         this.set_titlebar (header);
 
-        var playing_field = new PlayingField (4, 6);
+        var playing_field = new PlayingField (4);
         this.add (playing_field);
 
         this.delete_event.connect (this.on_delete_event);
