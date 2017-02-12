@@ -38,7 +38,6 @@ public class PlayingField : Gtk.Grid {
         this.row_spacing = 6;
         this.set_column_homogeneous (true);
         this.set_row_homogeneous (true);
-        //this.set_orientation (Gtk.Orientation.VERTICAL);
 
         // TODO: I probably need to write a function that localizes my image files by checking all the system_data_dirs returned...
         string[] sys_data_dir = Environment.get_system_data_dirs ();
@@ -48,19 +47,11 @@ public class PlayingField : Gtk.Grid {
 
         int[,] motif_arrangement = shuffled_motifs (this.size);
 
-        for (int y = -1; y < this.size; y++) {
-            for (int x = -1; x < this.size; x++) {
-                if (y == -1 || x == -1) {
-                    // Place empty labels in first column and row to prevent shrinking of grid.
-                    // FIXME: Prevent grid from shrinking without the X-rows and columns.
-                    this.attach(new Gtk.Label("X"), x, y, 1, 1);
-                }
-                else {
-                    var tile = new Tile (motif_arrangement[y, x], this.tile_motif_paths[motif_arrangement[y, x]], this.tile_backside_path);
-                    tile.button_press_event.connect ( () => { tile_clicked (tile); return true; } );
-                    tile.show ();
-                    attach(tile, x, y, 1, 1);
-                }
+        for (int y = 0; y < this.size; y++) {
+            for (int x = 0; x < this.size; x++) {
+                var tile = new Tile (motif_arrangement[y, x], this.tile_motif_paths[motif_arrangement[y, x]], this.tile_backside_path);
+                tile.button_press_event.connect ( () => { tile_clicked (tile); return true; } );
+                attach(tile, x, y, 1, 1);
             }
         }
 
