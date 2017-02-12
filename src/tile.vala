@@ -17,30 +17,51 @@
 
 using Gtk;
 
-public class Tile : Gtk.Button {
-    /** The tile class represents a single tile object of the game. **/
+public class Tile : Gtk.EventBox {
+    /** This class represents a memory tile. **/
     private int motif_id;
     private Image motif = new Image ();
     private Image backside = new Image ();
 
     public Tile (int motif_id, string motif_img_path, string backside_img_path) {
         this.motif_id = motif_id;
-        this.motif.set_from_file (motif_img_path);
-        this.backside.set_from_file (backside_img_path);
 
-        this.set_image (backside);
+        motif.set_from_file (motif_img_path);
+        motif.show ();
+        backside.set_from_file (backside_img_path);
+        backside.show ();
+        add (backside);
+
+        set_vexpand (false);
+        set_valign (Gtk.Align.CENTER);
+        set_hexpand (false);
+        set_halign (Gtk.Align.CENTER);
+
+        show ();
     }
 
-    public int get_motif () {
-        return this.motif_id;
+    public void flip () {
+        /** Flips this tile from backside to motif or vice versa **/
+        if (get_child () == backside) {
+            remove (backside);
+            add (motif);
+            set_sensitive (false);       // An exposed tile should not react to further clicking.
+        }
+        else {
+            remove (motif);
+            add (backside);
+            set_sensitive (true);
+        }
     }
 
-    public void turn_over () {
-        this.set_image (motif);
+    public bool pairs_with (Tile query_tile) {
+        /** Returns true if query_tile forms pair with this tile. **/
+        return motif_id == query_tile.get_motif_id ();
     }
 
-    public void turn_face_down () {
-        this.set_image (backside);
+    public int get_motif_id () {
+        /** Returns this tile's motif_id. **/
+        return motif_id;
     }
 
 }
