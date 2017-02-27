@@ -45,7 +45,7 @@ public class Header : Gtk.HeaderBar {
         this.pack_start (tile_field_size_button_vbox);
 
         /*  Settings button  */
-        Image settings_icon = new Image.from_icon_name ("document-properties", IconSize.SMALL_TOOLBAR);
+        var settings_icon = new Image.from_icon_name ("document-properties", IconSize.SMALL_TOOLBAR);
         var settings_button = new ToolButton (settings_icon, "Settings");
         settings_button.is_important = true;
         settings_button.set_tooltip_text ("Settings");

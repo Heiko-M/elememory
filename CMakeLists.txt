@@ -35,7 +35,7 @@ vala_precompile (VALA_C ${EXEC_NAME}
                  src/elememory.vala
                  src/window.vala
                  src/header.vala
-                 src/playingfield.vala
+                 src/tilefield.vala
                  src/tile.vala
 
                  PACKAGES

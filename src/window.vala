@@ -28,7 +28,7 @@ public class Window : Gtk.Window {
         var header = new Header ("eleMemory");
         this.set_titlebar (header);
 
-        var tile_field = new TileField (4);
+        var tile_field = new TileField (6);
         this.add (tile_field);
 
         header.tile_field_size_changed.connect( (emitter, mode) => {

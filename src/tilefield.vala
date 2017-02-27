@@ -18,15 +18,13 @@
 using Gtk;
 
 public class TileField : Gtk.Grid {
-    /** This class generates a playing field of the given even size, holding all
-      * the tiles separated by the given spacing value. It is a subclass of
-      * Gtk.Grid.
+    /** This class generates a tile field of the given even size, holding all
+      * the tiles.
      **/
 
     // TODO: Clean up this whole mess a bit (i.e. outsource all file path
     //       handling to a dedicated class and resolve tile scheme paths on
     //       Window level then pass the appropriate scheme paths to this.)
-    private int size;
     private Tile? tile_exposed = null;
     private int pairs_found = 0;
     private string[] tile_motif_paths = new string[32];
@@ -39,10 +37,10 @@ public class TileField : Gtk.Grid {
         this.set_row_homogeneous (true);
 
         // TODO: I probably need to write a function that localizes my image files by checking all the system_data_dirs returned...
-        string[] sys_data_dir = Environment.get_system_data_dirs ();
-        print (sys_data_dir[2]);  // the third one happens to be the right one...
-        this.tile_motif_paths = motif_img_paths (sys_data_dir[2], "default", 32);
-        this.tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dir[2], "/elememory/tile_schemes/default/back.png");
+        string[] sys_data_dirs = Environment.get_system_data_dirs ();
+        //print (sys_data_dirs[2]); // the third one happens to be the right one
+        this.tile_motif_paths = motif_img_paths (sys_data_dirs[2], "default", 32);
+        this.tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/elememory/tile_schemes/default/back.png");
 
         populate (size);
 
@@ -65,7 +63,6 @@ public class TileField : Gtk.Grid {
 
     public void repopulate (int size) {
         /** Deletes all tiles and repopulates the grid. **/
-        // TODO: delete all children of grid.
         this.forall ((element) => element.destroy ());
         populate (size);
     }
@@ -77,27 +74,23 @@ public class TileField : Gtk.Grid {
         if (tile_exposed != null) {
             // TODO: While timeout all tiles should be insensitive.
             Timeout.add_seconds (1, () => {
-                                try {
-                                     check_pair_found (tile);
-                                } catch (Error e) {
-                                     stderr.printf ("%s\n", e.message);
-                                }
-                                return false;
-            });
+                                           check_pair_found (tile);
+                                           return false;
+                                          });
         }
         else {
             tile_exposed = tile;
         }
     }
 
-    private bool check_pair_found (Tile tile_turned) {
-        /** Checks if two pairs are exposed and consequently either dismisses both
-          * or turns them face down again.
+    private void check_pair_found (Tile tile_turned) {
+        /** Checks if two pairs are exposed and consequently either dismisses
+          * both or turns them face down again.
          **/
         if (tile_exposed.pairs_with (tile_turned)) {
             pairs_found += 1;
-            tile_exposed.remove_from_playing_field ();
-            tile_turned.remove_from_playing_field ();
+            tile_exposed.remove_from_tile_field ();
+            tile_turned.remove_from_tile_field ();
         }
         else {
             tile_exposed.flip ();
@@ -105,21 +98,15 @@ public class TileField : Gtk.Grid {
         }
 
         tile_exposed = null;
-
-        return false;   // False, so Timeout doesn't call it repeatedly.
     }
 
     private string[] motif_img_paths (string sys_data_dir, string motif_set, int set_size) {
         /** Returns an array of strings of file paths to the motif images. **/
-        // TODO: Read the respective motif set file paths from XML scheme collection, maybe ...
-        //string app_base_path = File.new_for_path(Environment.get_current_dir()).get_parent().get_path();
-        //string images_path = Path.build_path (Path.DIR_SEPARATOR_S, app_base_path, "images/tile_schemes", motif_set);
         string[] paths = new string[32];
 
         // TODO: Shuffle images within this function (only relevant later when playing field size is adjustable.
         for (int i = 0; i < set_size; i++) {
             string img_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dir, "/elememory/tile_schemes/", motif_set, @"$i.png");
-            //stdout.printf("Loading " + img_path + "\n"); // FOR DEBUGGING.
             paths[i] = img_path;
         }
 

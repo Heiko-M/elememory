@@ -56,7 +56,7 @@ public class Tile : Gtk.EventBox {
         }
     }
 
-    public void remove_from_playing_field () {
+    public void remove_from_tile_field () {
         /** Removes the visible representation of this tile. **/
         // XXX: It remains in the grid so no columns or rows disappear, but it's
         //      invisible and insensitive to mouse clicks.
