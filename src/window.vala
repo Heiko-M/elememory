@@ -18,28 +18,30 @@
 using Gtk;
 
 public class Window : Gtk.Window {
+    public Window () {
+        this.set_default_size (812, 937);
+        this.set_position (Gtk.WindowPosition.CENTER);
+        this.set_border_width (12);
+        this.delete_event.connect (this.on_delete_event);
+        this.destroy.connect (Gtk.main_quit);
+
+        var header = new Header ("eleMemory");
+        this.set_titlebar (header);
+
+        var tile_field = new TileField (4);
+        this.add (tile_field);
+
+        header.tile_field_size_changed.connect( (emitter, mode) => {
+                                                                    tile_field.repopulate (4 + mode * 2);
+                                                                   });
+
+        show_all ();
+        Gtk.main ();
+    }
 
     public bool on_delete_event () {
         //TODO: implement save of current game status to reload on next start.
         Gtk.main_quit ();
         return false;
-    }
-
-    public Window () {
-        this.set_default_size (800, 800);
-        this.set_position (Gtk.WindowPosition.CENTER);
-        this.set_border_width (12);
-
-        var header = new Header ("eleMemory");
-        this.set_titlebar (header);
-
-        var playing_field = new PlayingField (4);
-        this.add (playing_field);
-
-        this.delete_event.connect (this.on_delete_event);
-        this.destroy.connect (Gtk.main_quit);
-
-        show_all ();
-        Gtk.main ();
     }
 }

@@ -17,7 +17,7 @@
 
 using Gtk;
 
-public class PlayingField : Gtk.Grid {
+public class TileField : Gtk.Grid {
     /** This class generates a playing field of the given even size, holding all
       * the tiles separated by the given spacing value. It is a subclass of
       * Gtk.Grid.
@@ -32,8 +32,7 @@ public class PlayingField : Gtk.Grid {
     private string[] tile_motif_paths = new string[32];
     private string tile_backside_path;
 
-    public PlayingField (int size) {
-        this.size = size;
+    public TileField (int size) {
         this.column_spacing = 6;
         this.row_spacing = 6;
         this.set_column_homogeneous (true);
@@ -42,20 +41,33 @@ public class PlayingField : Gtk.Grid {
         // TODO: I probably need to write a function that localizes my image files by checking all the system_data_dirs returned...
         string[] sys_data_dir = Environment.get_system_data_dirs ();
         print (sys_data_dir[2]);  // the third one happens to be the right one...
-        this.tile_motif_paths = motif_img_paths (sys_data_dir[2], "default", 8);
+        this.tile_motif_paths = motif_img_paths (sys_data_dir[2], "default", 32);
         this.tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dir[2], "/elememory/tile_schemes/default/back.png");
 
-        int[,] motif_arrangement = shuffled_motifs (this.size);
+        populate (size);
 
-        for (int y = 0; y < this.size; y++) {
-            for (int x = 0; x < this.size; x++) {
+        show();
+    }
+
+    private void populate (int size) {
+        /** Populates the grid with tiles. **/
+        int[,] motif_arrangement = shuffled_motifs (size);
+
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 var tile = new Tile (motif_arrangement[y, x], this.tile_motif_paths[motif_arrangement[y, x]], this.tile_backside_path);
-                tile.button_press_event.connect ( () => { tile_clicked (tile); return true; } );
+                tile.button_press_event.connect ( () => { tile_clicked (tile); return true; });
+                tile.show ();
                 attach(tile, x, y, 1, 1);
             }
         }
+    }
 
-        show();
+    public void repopulate (int size) {
+        /** Deletes all tiles and repopulates the grid. **/
+        // TODO: delete all children of grid.
+        this.forall ((element) => element.destroy ());
+        populate (size);
     }
 
     private void tile_clicked (Tile tile) {

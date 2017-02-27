@@ -16,11 +16,33 @@
 */
 
 using Gtk;
+using Granite;
 
 public class Header : Gtk.HeaderBar {
+    public signal void tile_field_size_changed (int mode);
+    private Box tile_field_size_button_vbox;
+    private Granite.Widgets.ModeButton tile_field_size_button;
+
     public Header (string title) {
-        this.set_show_close_button (true);
-        this.set_title (title);
+        set_show_close_button (true);
+        set_title (title);
+
+        /*  Tile field size button  */
+        tile_field_size_button_vbox = new Box (Gtk.Orientation.VERTICAL, 0);
+        tile_field_size_button = new Granite.Widgets.ModeButton ();
+        var field_small_icon = new Image.from_icon_name ("tile-field-small", IconSize.SMALL_TOOLBAR);
+        var field_medium_icon = new Image.from_icon_name ("tile-field-medium", IconSize.SMALL_TOOLBAR);
+        var field_large_icon = new Image.from_icon_name ("tile-field-large", IconSize.SMALL_TOOLBAR);
+        tile_field_size_button.append (field_small_icon);
+        tile_field_size_button.append (field_medium_icon);
+        tile_field_size_button.append (field_large_icon);
+        tile_field_size_button.set_active (1);
+        tile_field_size_button_vbox.pack_start (tile_field_size_button, false, false, 6);
+        tile_field_size_button_vbox.set_center_widget (tile_field_size_button);
+        tile_field_size_button.mode_changed.connect ( () => {
+                                                             tile_field_size_changed (tile_field_size_button.selected);
+                                                            }); 
+        this.pack_start (tile_field_size_button_vbox);
 
         /*  Settings button  */
         Image settings_icon = new Image.from_icon_name ("document-properties", IconSize.SMALL_TOOLBAR);
