@@ -29,6 +29,8 @@ public class TileField : Gtk.Grid {
     private int pairs_found = 0;
     private string[] tile_motif_paths = new string[32];
     private string tile_backside_path;
+    public signal void tiles_insensitive ();
+    public signal void tiles_sensitive ();
 
     public TileField (int size) {
         this.column_spacing = 6;
@@ -48,13 +50,15 @@ public class TileField : Gtk.Grid {
     }
 
     private void populate (int size) {
-        /** Populates the grid with tiles. **/
+        /** Populates the grid with newly created tiles. **/
         int[,] motif_arrangement = shuffled_motifs (size);
 
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                var tile = new Tile (motif_arrangement[y, x], this.tile_motif_paths[motif_arrangement[y, x]], this.tile_backside_path);
+                Tile tile = new Tile (motif_arrangement[y, x], this.tile_motif_paths[motif_arrangement[y, x]], this.tile_backside_path);
                 tile.exposed.connect ( (emitter) => { on_exposure (emitter); });
+                tiles_insensitive.connect (tile.desensitize);
+                tiles_sensitive.connect (tile.sensitize); 
                 tile.show ();
                 attach(tile, x, y, 1, 1);
             }
@@ -70,9 +74,10 @@ public class TileField : Gtk.Grid {
     private void on_exposure (Tile tile) {
         /** Checks for exposed tiles and initiates pair check if due. **/
         if (tile_exposed != null) {
-            // TODO: While timeout all tiles should be insensitive.
+            tiles_insensitive ();
             Timeout.add_seconds (1, () => {
                                            check_pair_found (tile);
+                                           tiles_sensitive ();
                                            return false;
                                           });
         }

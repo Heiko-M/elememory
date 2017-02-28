@@ -22,7 +22,7 @@ public class Tile : Gtk.EventBox {
     private int motif_id;
     private Image motif = new Image ();
     private Image backside = new Image ();
-    private bool present_in_game;           //XXX: Necessary?
+    private bool present_in_game;
     private ulong button_press_handler_id;
     public signal void exposed ();
 
@@ -44,13 +44,12 @@ public class Tile : Gtk.EventBox {
 
         button_press_handler_id = button_press_event.connect ( () => { turn_face_up (); return true;
                                                                      });
-
         show ();
     }
 
     private void turn_face_up () {
         /** Turns the tile motif side up and emits the exposed signal. **/
-        SignalHandler.block (this, button_press_handler_id);  // Block from further clicking.
+        desensitize ();  // Block from further clicking.
         remove (backside);
         add (motif); 
         exposed ();
@@ -60,7 +59,17 @@ public class Tile : Gtk.EventBox {
         /** Turns the tile motif side down. **/
         remove (motif);
         add (backside);
-        SignalHandler.unblock (this, button_press_handler_id);
+        sensitize ();
+    }
+
+    public void desensitize () {
+        SignalHandler.block (this, button_press_handler_id);
+    }
+
+    public void sensitize () {
+        if (present_in_game) {
+            SignalHandler.unblock (this, button_press_handler_id);
+        }
     }
 
     public void remove_from_tile_field () {
