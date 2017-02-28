@@ -23,6 +23,8 @@ public class Tile : Gtk.EventBox {
     private Image motif = new Image ();
     private Image backside = new Image ();
     private bool present_in_game;           //XXX: Necessary?
+    private ulong button_press_handler_id;
+    public signal void exposed ();
 
     public Tile (int motif_id, string motif_img_path, string backside_img_path) {
         this.motif_id = motif_id;
@@ -40,30 +42,34 @@ public class Tile : Gtk.EventBox {
         backside.show ();
         add (backside);
 
+        button_press_handler_id = button_press_event.connect ( () => { turn_face_up (); return true;
+                                                                     });
+
         show ();
     }
 
-    public void flip () {
-        /** Flips this tile from backside to motif or vice versa **/
-        if (get_child () == backside) {
-            remove (backside);
-            add (motif);
-            set_sensitive (false);       // An exposed tile should not react to further clicking.
-        }
-        else if (get_child () == motif) {
-            remove (motif);
-            add (backside);
-            set_sensitive (true);
-        }
+    private void turn_face_up () {
+        /** Turns the tile motif side up and emits the exposed signal. **/
+        SignalHandler.block (this, button_press_handler_id);  // Block from further clicking.
+        remove (backside);
+        add (motif); 
+        exposed ();
+    }
+
+    public void turn_face_down () {
+        /** Turns the tile motif side down. **/
+        remove (motif);
+        add (backside);
+        SignalHandler.unblock (this, button_press_handler_id);
     }
 
     public void remove_from_tile_field () {
         /** Removes the visible representation of this tile. **/
-        // XXX: It remains in the grid so no columns or rows disappear, but it's
-        //      invisible and insensitive to mouse clicks.
+        // XXX: It remains in the grid so no columns or rows disappear, but
+        //      it's invisible and insensitive to mouse clicks.
         remove( get_child ());
         present_in_game = false;
-        set_sensitive (false);
+        disconnect (button_press_handler_id);
     }
 
     public bool pairs_with (Tile query_tile) {

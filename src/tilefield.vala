@@ -54,7 +54,7 @@ public class TileField : Gtk.Grid {
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
                 var tile = new Tile (motif_arrangement[y, x], this.tile_motif_paths[motif_arrangement[y, x]], this.tile_backside_path);
-                tile.button_press_event.connect ( () => { tile_clicked (tile); return true; });
+                tile.exposed.connect ( (emitter) => { on_exposure (emitter); });
                 tile.show ();
                 attach(tile, x, y, 1, 1);
             }
@@ -63,14 +63,12 @@ public class TileField : Gtk.Grid {
 
     public void repopulate (int size) {
         /** Deletes all tiles and repopulates the grid. **/
-        this.forall ((element) => element.destroy ());
+        forall ((element) => element.destroy ());
         populate (size);
     }
 
-    private void tile_clicked (Tile tile) {
-        /** Reveals the tile clicked and initiates pair check if due. **/
-        tile.flip ();
-
+    private void on_exposure (Tile tile) {
+        /** Checks for exposed tiles and initiates pair check if due. **/
         if (tile_exposed != null) {
             // TODO: While timeout all tiles should be insensitive.
             Timeout.add_seconds (1, () => {
@@ -93,8 +91,8 @@ public class TileField : Gtk.Grid {
             tile_turned.remove_from_tile_field ();
         }
         else {
-            tile_exposed.flip ();
-            tile_turned.flip ();
+            tile_exposed.turn_face_down ();
+            tile_turned.turn_face_down ();
         }
 
         tile_exposed = null;
