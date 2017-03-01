@@ -37,6 +37,7 @@ vala_precompile (VALA_C ${EXEC_NAME}
                  src/header.vala
                  src/tilefield.vala
                  src/tile.vala
+                 src/fileutils.vala
 
                  PACKAGES
                  gtk+-3.0

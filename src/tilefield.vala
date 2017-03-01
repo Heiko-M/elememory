@@ -22,9 +22,6 @@ public class TileField : Gtk.Grid {
       * the tiles.
      **/
 
-    // TODO: Clean up this whole mess a bit (i.e. outsource all file path
-    //       handling to a dedicated class and resolve tile scheme paths on
-    //       Window level then pass the appropriate scheme paths to this.)
     private Tile? tile_exposed = null;
     private int pairs_found = 0;
     private string[] tile_motif_paths = new string[32];
@@ -38,11 +35,12 @@ public class TileField : Gtk.Grid {
         this.set_column_homogeneous (true);
         this.set_row_homogeneous (true);
 
-        // TODO: I probably need to write a function that localizes my image files by checking all the system_data_dirs returned...
+        // TODO: Resolve tile scheme paths on Window level, then pass the
+        //       appropriate scheme paths to this.)
         string[] sys_data_dirs = Environment.get_system_data_dirs ();
-        //print (sys_data_dirs[2]); // the third one happens to be the right one
-        this.tile_motif_paths = motif_img_paths (sys_data_dirs[2], "default", 32);
-        this.tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/elememory/tile_schemes/default/back.png");
+        //print (sys_data_dirs[2]); // 3rd one happens to be the right one
+        tile_motif_paths = FileUtils.motif_img_paths (sys_data_dirs[2], "default", 32);
+        tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/elememory/tile_schemes/default/back.png");
 
         populate (size);
 
@@ -103,31 +101,9 @@ public class TileField : Gtk.Grid {
         tile_exposed = null;
     }
 
-    private string[] motif_img_paths (string sys_data_dir, string motif_set, int set_size) {
-        /** Returns an array of strings of file paths to the motif images. **/
-        string[] paths = new string[32];
-
-        // TODO: Shuffle images within this function (only relevant later when playing field size is adjustable.
-        for (int i = 0; i < set_size; i++) {
-            string img_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dir, "/elememory/tile_schemes/", motif_set, @"$i.png");
-            paths[i] = img_path;
-        }
-
-        return paths;
-    }
-
-    private string backside_img_path (string motif_set) {
-        /** Returns the image path of the tile backside image. **/
-        // XXX: DEPRECATED due to installation of images in subfolder of system_data_dir...
-        string app_base_path = File.new_for_path(Environment.get_current_dir()).get_parent().get_path();
-        string images_path = Path.build_path (Path.DIR_SEPARATOR_S, app_base_path, "images/tile_schemes", motif_set);
-        string img_path = Path.build_path (Path.DIR_SEPARATOR_S, images_path, "back.png");
-        return img_path;
-    }
-
     private static int[,] shuffled_motifs (int dimension) {
-        /** Returns a 2-dimensional array which holds randomly distributed pairs
-          * of numbers from 0 to dimension^2 / 2 - 1.
+        /** Returns a 2-dimensional array which holds randomly distributed
+          * pairs of numbers from 0 to dimension^2 / 2 - 1.
          **/
         int[] tile_motifs = new int[dimension * dimension / 2];
         int[] motif_taken = new int[dimension * dimension / 2];
