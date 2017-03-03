@@ -19,11 +19,23 @@ using Gtk;
 
 public class IndicatorBar : Gtk.ActionBar {
     /** This class represents the bottom indicator bar. **/
+    private int draws = 0;
+    private int matches = 0;
+    private Label stats_label;
+
     public IndicatorBar () {
-        var stats_label = new Label ("Draws: 0     Matches: 0");
+        stats_label = new Label ("Draws: 0     Matches: 0");
         set_center_widget (stats_label);
     }
 
-    public void update_stats (int draws, int matches) {
+    public void update_stats (int matches) {
+        draws += 1;
+        this.matches += matches;
+        stats_label.set_text (@"Draws: $draws     Matches: $(this.matches)");
+    }
+
+    public void reset_stats () {
+        draws = 0;
+        matches = 0;
     }
 }

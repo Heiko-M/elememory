@@ -18,16 +18,16 @@
 using Gtk;
 
 public class TileField : Gtk.Grid {
-    /** This class generates a tile field of the given even size, holding all
-      * the tiles.
+    /** This class generates a tile field of the given even size, holding
+      * all the tiles.
      **/
 
     private Tile? tile_exposed = null;
-    private int pairs_found = 0;
     private string[] tile_motif_paths = new string[32];
     private string tile_backside_path;
     public signal void tiles_insensitive ();
     public signal void tiles_sensitive ();
+    public signal void tiles_matched (int matches);
 
     public TileField (int size) {
         this.column_spacing = 6;
@@ -36,7 +36,7 @@ public class TileField : Gtk.Grid {
         this.set_row_homogeneous (true);
 
         // TODO: Resolve tile scheme paths on Window level, then pass the
-        //       appropriate scheme paths to this.)
+        //       appropriate scheme paths to this.
         string[] sys_data_dirs = Environment.get_system_data_dirs ();
         //print (sys_data_dirs[2]); // 3rd one happens to be the right one
         tile_motif_paths = FileUtils.motif_img_paths (sys_data_dirs[2], "default", 32);
@@ -89,13 +89,14 @@ public class TileField : Gtk.Grid {
           * both or turns them face down again.
          **/
         if (tile_exposed.pairs_with (tile_turned)) {
-            pairs_found += 1;
             tile_exposed.remove_from_tile_field ();
             tile_turned.remove_from_tile_field ();
+            tiles_matched (1);
         }
         else {
             tile_exposed.turn_face_down ();
             tile_turned.turn_face_down ();
+            tiles_matched (0);
         }
 
         tile_exposed = null;

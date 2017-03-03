@@ -38,12 +38,16 @@ public class Window : Gtk.Window {
         tile_field_box.set_center_widget (tile_field);
         vlayout.pack_start (tile_field_box, true, true, 12);
 
-        header.tile_field_size_changed.connect( (emitter, mode) => {
+        header.tile_field_size_changed.connect( (mode) => {
                                                                     tile_field.repopulate (4 + mode * 2);
                                                                    });
 
         var indicator_bar = new IndicatorBar ();
         vlayout.pack_end (indicator_bar, false, false, 0);
+
+        tile_field.tiles_matched.connect ( (matches) => {
+                                                         indicator_bar.update_stats (matches);
+                                                        });
 
         add (vlayout);
 
