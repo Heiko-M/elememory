@@ -21,19 +21,31 @@ public class Window : Gtk.Window {
     public Window () {
         this.set_default_size (812, 937);
         this.set_position (Gtk.WindowPosition.CENTER);
-        this.set_border_width (12);
+        this.set_border_width (0);
         this.delete_event.connect (this.on_delete_event);
         this.destroy.connect (Gtk.main_quit);
 
+        // HEADER BAR
         var header = new Header ("eleMemory");
         this.set_titlebar (header);
 
+        // WINDOW CONTENT
+        var vlayout = new Box (Gtk.Orientation.VERTICAL, 0);
+
+        var tile_field_box = new Box (Gtk.Orientation.HORIZONTAL, 0);
         var tile_field = new TileField (6);
-        this.add (tile_field);
+        tile_field_box.pack_start (tile_field, true, true, 12);
+        tile_field_box.set_center_widget (tile_field);
+        vlayout.pack_start (tile_field_box, true, true, 12);
 
         header.tile_field_size_changed.connect( (emitter, mode) => {
                                                                     tile_field.repopulate (4 + mode * 2);
                                                                    });
+
+        var indicator_bar = new IndicatorBar ();
+        vlayout.pack_end (indicator_bar, false, false, 0);
+
+        add (vlayout);
 
         show_all ();
         Gtk.main ();
