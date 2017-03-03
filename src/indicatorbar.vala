@@ -29,13 +29,16 @@ public class IndicatorBar : Gtk.ActionBar {
     }
 
     public void update_stats (int matches) {
+        /** Updates game stats after a draw. **/
         draws += 1;
         this.matches += matches;
         stats_label.set_text (@"Draws: $draws     Matches: $(this.matches)");
     }
 
     public void reset_stats () {
+        /** Resets game stats and indicator label. **/
         draws = 0;
         matches = 0;
+        stats_label.set_text (@"Draws: $draws     Matches: $(this.matches)");
     }
 }

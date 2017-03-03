@@ -18,6 +18,9 @@
 using Gtk;
 
 public class Window : Gtk.Window {
+    /** The window class defines the layout of widgets and the connection of
+      * signals.
+     **/
     public Window () {
         this.set_default_size (812, 937);
         this.set_position (Gtk.WindowPosition.CENTER);
@@ -38,7 +41,7 @@ public class Window : Gtk.Window {
         tile_field_box.set_center_widget (tile_field);
         vlayout.pack_start (tile_field_box, true, true, 12);
 
-        header.tile_field_size_changed.connect( (mode) => {
+        header.tile_field_size_changed.connect ( (mode) => {
                                                                     tile_field.repopulate (4 + mode * 2);
                                                                    });
 
@@ -48,6 +51,7 @@ public class Window : Gtk.Window {
         tile_field.tiles_matched.connect ( (matches) => {
                                                          indicator_bar.update_stats (matches);
                                                         });
+        header.tile_field_size_changed.connect (indicator_bar.reset_stats);
 
         add (vlayout);
 
