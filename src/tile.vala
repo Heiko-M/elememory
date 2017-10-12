@@ -30,10 +30,11 @@ public class Tile : Gtk.EventBox {
         this.motif_id = motif_id;
         present_in_game = true;
 
-        set_vexpand (false);
-        set_valign (Gtk.Align.CENTER);
-        set_hexpand (false);
-        set_halign (Gtk.Align.CENTER);
+        margin = 12;
+        vexpand = false;
+        valign = Gtk.Align.CENTER;
+        hexpand = false;
+        halign = Gtk.Align.CENTER;
         set_visible_window (false);
 
         motif.set_from_file (motif_img_path);

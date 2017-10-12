@@ -21,7 +21,6 @@ public class TileField : Gtk.Grid {
     /** This class generates a tile field of the given even size, holding
       * all the tiles.
      **/
-
     private Tile? tile_exposed = null;
     private string[] tile_motif_paths = new string[32];
     private string tile_backside_path;
@@ -30,10 +29,11 @@ public class TileField : Gtk.Grid {
     public signal void tiles_matched (int matches);
 
     public TileField (int size) {
-        this.column_spacing = 6;
-        this.row_spacing = 6;
-        this.set_column_homogeneous (true);
-        this.set_row_homogeneous (true);
+        margin = 6;
+        column_spacing = 6;
+        row_spacing = 6;
+        set_column_homogeneous (true);
+        set_row_homogeneous (true);
 
         // TODO: Resolve tile scheme paths on Window level, then pass the
         //       appropriate scheme paths to this.

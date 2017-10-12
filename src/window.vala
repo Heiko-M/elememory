@@ -1,30 +1,30 @@
-/* Copyright 2017, Heiko Müller
+/*
+* Copyright (c) 2017 Heiko Müller (https://github.com/heiko-m)
 *
-* This file is part of eleMemory.
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public
+* License as published by the Free Software Foundation; either
+* version 2 of the License, or (at your option) any later version.
 *
-* eleMemory is free software: you can redistribute it and/or modify it under the
-* terms of the GNU General Public License as published by the Free Software
-* Foundation, either version 3 of the License, or (at your option) any later
-* version.
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* General Public License for more details.
 *
-* eleMemory is distributed in the hope that it will be useful, but WITHOUT ANY
-* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-* A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+* You should have received a copy of the GNU General Public
+* License along with this program; if not, write to the
+* Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+* Boston, MA 02110-1301 USA
 *
-* You should have received a copy of the GNU General Public License along with
-* eleMemory. If not, see http://www.gnu.org/licenses/.
+* Authored by: Heiko Müller <mue.heiko@web.de>
 */
-
-using Gtk;
 
 public class Window : Gtk.Window {
     /** The window class defines the layout of widgets and the connection of
       * signals.
      **/
     public Window () {
-        this.set_default_size (812, 937);
         this.set_position (Gtk.WindowPosition.CENTER);
-        this.set_border_width (0);
         this.delete_event.connect (this.on_delete_event);
         this.destroy.connect (Gtk.main_quit);
 
@@ -33,27 +33,17 @@ public class Window : Gtk.Window {
         this.set_titlebar (header);
 
         // WINDOW CONTENT
-        var vlayout = new Box (Gtk.Orientation.VERTICAL, 0);
+        var stack = new Gtk.Stack ();
+        stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
 
-        var tile_field_box = new Box (Gtk.Orientation.HORIZONTAL, 0);
         var tile_field = new TileField (6);
-        tile_field_box.pack_start (tile_field, true, true, 12);
-        tile_field_box.set_center_widget (tile_field);
-        vlayout.pack_start (tile_field_box, true, true, 12);
+        stack.add_named (tile_field, "board");
 
         header.tile_field_size_changed.connect ( (mode) => {
                                                                     tile_field.repopulate (4 + mode * 2);
                                                                    });
 
-        var indicator_bar = new IndicatorBar ();
-        vlayout.pack_end (indicator_bar, false, false, 0);
-
-        tile_field.tiles_matched.connect ( (matches) => {
-                                                         indicator_bar.update_stats (matches);
-                                                        });
-        header.tile_field_size_changed.connect (indicator_bar.reset_stats);
-
-        add (vlayout);
+        add (stack);
 
         show_all ();
         Gtk.main ();
