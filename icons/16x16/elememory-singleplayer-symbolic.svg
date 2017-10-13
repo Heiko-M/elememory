@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="field_small.svg">
+   sodipodi:docname="elememory-singleplayer-symbolic.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="54.46875"
-     inkscape:cx="6.3668561"
-     inkscape:cy="7.4533443"
+     inkscape:zoom="56.528976"
+     inkscape:cx="4.3159276"
+     inkscape:cy="7.273076"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -35,7 +35,7 @@
      inkscape:window-width="2560"
      inkscape:window-height="1407"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="5"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -49,31 +49,32 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
-     inkscape:label="Ebene 1"
+     inkscape:label="Player"
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-1036.3622)">
+    <g
+       id="g6221"
+       transform="matrix(0.26119573,0,0,0.26120499,-34.078623,860.41293)"
+       style="fill:#666666;stroke:#333333;fill-opacity:1">
+      <ellipse
+         cy="687.00555"
+         cx="155.35715"
+         id="path6217"
+         style="fill:#666666;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
+         rx="9.5713663"
+         ry="9.5710268" />
+    </g>
     <path
-       sodipodi:type="star"
-       style="opacity:1;fill:#333333;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path4157"
-       sodipodi:sides="5"
-       sodipodi:cx="7.6702361"
-       sodipodi:cy="1044.2955"
-       sodipodi:r1="4.1231055"
-       sodipodi:r2="2.0615528"
-       sodipodi:arg1="1.3089969"
-       sodipodi:arg2="1.9373155"
-       inkscape:flatsided="false"
-       inkscape:rounded="0"
-       inkscape:randomized="0"
-       d="m 8.7373745,1048.2781 -1.8059329,-2.0579 -2.7191327,0.3209 1.3991997,-2.3535 -1.1455274,-2.4868 2.6706859,0.6034 2.0111577,-1.8579 0.251375,2.7264 2.3884912,1.3386 -2.5153275,1.0816 z"
-       inkscape:transform-center-x="-0.32976386"
-       inkscape:transform-center-y="0.06668175" />
+       style="fill:#666666;fill-rule:evenodd;stroke:none;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m 8.9992465,1042.3594 c -1.972627,0.6245 -2.965948,1.0213 -4.99738,0.9989 -0.1944308,2.5393 0.0914,6.2951 1.9922105,8.0097 4.29464,0.01 5.724617,-1.3599 6.00293,-3.0045 z"
+       id="path6241"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
   </g>
 </svg>

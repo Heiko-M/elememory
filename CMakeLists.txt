@@ -38,6 +38,7 @@ vala_precompile (VALA_C ${EXEC_NAME}
                  src/tilefield.vala
                  src/tile.vala
                  src/fileutils.vala
+                 src/Widgets/ToggleSwitch.vala
 
                  PACKAGES
                  gtk+-3.0

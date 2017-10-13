@@ -21,35 +21,18 @@
 
 public class Header : Gtk.HeaderBar {
     public signal void tile_field_size_changed (int mode);
-    private Gtk.Box tile_field_size_button_vbox;
-    private Granite.Widgets.ModeButton tile_field_size_button;
 
     public Header (string title) {
         set_show_close_button (true);
         set_title (title);
 
-        /*  Tile field size button  */
-        tile_field_size_button_vbox = new Gtk.Box (Gtk.Orientation.VERTICAL, 0);
-        tile_field_size_button = new Granite.Widgets.ModeButton ();
-        var field_small_icon = new Gtk.Image.from_icon_name ("tile-field-small", Gtk.IconSize.SMALL_TOOLBAR);
-        var field_medium_icon = new Gtk.Image.from_icon_name ("tile-field-medium", Gtk.IconSize.SMALL_TOOLBAR);
-        var field_large_icon = new Gtk.Image.from_icon_name ("tile-field-large", Gtk.IconSize.SMALL_TOOLBAR);
-        tile_field_size_button.append (field_small_icon);
-        tile_field_size_button.append (field_medium_icon);
-        tile_field_size_button.append (field_large_icon);
-        tile_field_size_button.set_active (1);
-        tile_field_size_button_vbox.pack_start (tile_field_size_button, false, false, 6);
-        tile_field_size_button_vbox.set_center_widget (tile_field_size_button);
-        tile_field_size_button.mode_changed.connect ( () => {
-                                                             tile_field_size_changed (tile_field_size_button.selected);
-                                                            }); 
-        this.pack_start (tile_field_size_button_vbox);
+        /*  Player mode toggle switch  */
+        var player_mode_switch = new Elememory.Widgets.ToggleSwitch ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0);
+        this.pack_start (player_mode_switch);
 
-        /*  Highscore button  */
-        var highscore_icon = new Gtk.Image.from_icon_name ("elememory-highscore-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-        var highscore_button = new Gtk.ToolButton (highscore_icon, "Highscore");
-        highscore_button.is_important = true;
-        highscore_button.set_tooltip_text ("Highscore");
-        this.pack_end (highscore_button);
+        /*  Highscore - board toggle switch  */
+        var highscore_switch = new Elememory.Widgets.ToggleSwitch ("elememory-highscore-symbolic", "elememory-board-symbolic", 0);
+        highscore_switch.set_tooltip_text ("Highscore");  // TODO: toggle tooltip text as well.
+        this.pack_end (highscore_switch);
     }
 }

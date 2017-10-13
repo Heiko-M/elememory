@@ -1,0 +1,61 @@
+/*
+* Copyright (c) 2017 Heiko Müller (https://github.com/heiko-m)
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the GNU General Public
+* License as published by the Free Software Foundation; either
+* version 2 of the License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public
+* License along with this program; if not, write to the
+* Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+* Boston, MA 02110-1301 USA
+*
+* Authored by: Heiko Müller <mue.heiko@web.de>
+*/
+
+namespace Elememory.Widgets {
+    /** 
+      * Switch which toggles between two states represented by different icons.
+      */
+    public class ToggleSwitch : Gtk.ToolButton {
+        public int selected { get; construct set; }
+        public string iconname_0 { get; construct; }
+        public string iconname_1 { get; construct; }
+
+        public ToggleSwitch (string iconname_0, string iconname_1, int selected) {
+            Object (
+                selected: selected,
+                iconname_0: iconname_0,
+                iconname_1: iconname_1
+            );
+        }
+
+        construct {
+            if (selected == 0) {
+                set_icon_name (iconname_0);
+            } else {
+                set_icon_name (iconname_1);
+            }
+            
+            clicked.connect (() => {
+                                    toggle ();
+                                   });
+        }
+
+        public void toggle () {
+            if (selected == 0) {
+                set_icon_name (iconname_1);
+                selected = 1;
+            } else {
+                set_icon_name (iconname_0);
+                selected = 0;
+            }
+        }
+    }
+}

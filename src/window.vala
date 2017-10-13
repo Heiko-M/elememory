@@ -20,9 +20,10 @@
 */
 
 public class Window : Gtk.Window {
-    /** The window class defines the layout of widgets and the connection of
+    /**
+      * The window class defines the layout of widgets and the connection of
       * signals.
-     **/
+      */
     public Window () {
         this.set_position (Gtk.WindowPosition.CENTER);
         this.delete_event.connect (this.on_delete_event);
