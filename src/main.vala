@@ -22,7 +22,7 @@
 int main (string[] args) {
     Gtk.init (ref args);
 
-    var app = new elememoryApp ();
+    var app = new Elememory.App ();
 
     return app.run (args);
 }

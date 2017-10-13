@@ -33,8 +33,9 @@ include (ValaPrecompile)
 vala_precompile (VALA_C ${EXEC_NAME}
                  src/main.vala
                  src/elememory.vala
-                 src/window.vala
-                 src/header.vala
+                 src/Window.vala
+                 src/Widgets/Header.vala
+                 src/Model.vala
                  src/tilefield.vala
                  src/tile.vala
                  src/fileutils.vala

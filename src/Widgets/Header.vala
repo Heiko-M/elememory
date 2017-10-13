@@ -19,20 +19,22 @@
 * Authored by: Heiko Müller <mue.heiko@web.de>
 */
 
-public class Header : Gtk.HeaderBar {
-    public signal void tile_field_size_changed (int mode);
+namespace Elememory.Widgets {
+    public class Header : Gtk.HeaderBar {
+        public signal void tile_field_size_changed (int mode);
 
-    public Header (string title) {
-        set_show_close_button (true);
-        set_title (title);
+        public Header (string title) {
+            set_show_close_button (true);
+            set_title (title);
 
-        /*  Player mode toggle switch  */
-        var player_mode_switch = new Elememory.Widgets.ToggleSwitch ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0);
-        this.pack_start (player_mode_switch);
+            /*  Player mode toggle switch  */
+            var player_mode_switch = new ToggleSwitch ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0);
+            this.pack_start (player_mode_switch);
 
-        /*  Highscore - board toggle switch  */
-        var highscore_switch = new Elememory.Widgets.ToggleSwitch ("elememory-highscore-symbolic", "elememory-board-symbolic", 0);
-        highscore_switch.set_tooltip_text ("Highscore");  // TODO: toggle tooltip text as well.
-        this.pack_end (highscore_switch);
+            /*  Highscore - board toggle switch  */
+            var highscore_switch = new ToggleSwitch ("elememory-highscore-symbolic", "elememory-board-symbolic", 0);
+            highscore_switch.set_tooltip_text ("Highscore");  // TODO: toggle tooltip text as well.
+            this.pack_end (highscore_switch);
+        }
     }
 }
