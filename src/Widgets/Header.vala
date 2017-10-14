@@ -28,12 +28,11 @@ namespace Elememory.Widgets {
             set_title (title);
 
             /*  Player mode toggle switch  */
-            var player_mode_switch = new ToggleSwitch ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0);
+            var player_mode_switch = new ToggleSwitch.with_tooltip_texts ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0, "Dualplayer", "Singleplayer");
             this.pack_start (player_mode_switch);
 
             /*  Highscore - board toggle switch  */
-            var highscore_switch = new ToggleSwitch ("elememory-highscore-symbolic", "elememory-board-symbolic", 0);
-            highscore_switch.set_tooltip_text ("Highscore");  // TODO: toggle tooltip text as well.
+            var highscore_switch = new ToggleSwitch.with_tooltip_texts ("elememory-highscore-symbolic", "elememory-board-symbolic", 0, "Highscore", "Game");
             this.pack_end (highscore_switch);
         }
     }

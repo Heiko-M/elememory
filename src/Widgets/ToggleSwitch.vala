@@ -27,20 +27,30 @@ namespace Elememory.Widgets {
         public int selected { get; construct set; }
         public string iconname_0 { get; construct; }
         public string iconname_1 { get; construct; }
+        public string? tooltip_text_0 { get; construct; }
+        public string? tooltip_text_1 { get; construct; }
 
         public ToggleSwitch (string iconname_0, string iconname_1, int selected) {
+            this.with_tooltip_texts (iconname_0, iconname_1, selected, null, null);
+        }
+
+        public ToggleSwitch.with_tooltip_texts (string iconname_0, string iconname_1, int selected, string? tooltip_text_0, string? tooltip_text_1) {
             Object (
                 selected: selected,
                 iconname_0: iconname_0,
-                iconname_1: iconname_1
+                iconname_1: iconname_1,
+                tooltip_text_0: tooltip_text_0,
+                tooltip_text_1: tooltip_text_1
             );
         }
 
         construct {
             if (selected == 0) {
                 set_icon_name (iconname_0);
+                set_tooltip_text (tooltip_text_0);
             } else {
                 set_icon_name (iconname_1);
+                set_tooltip_text (tooltip_text_1);
             }
             
             clicked.connect (() => {
@@ -51,9 +61,11 @@ namespace Elememory.Widgets {
         public void toggle () {
             if (selected == 0) {
                 set_icon_name (iconname_1);
+                set_tooltip_text (tooltip_text_1);
                 selected = 1;
             } else {
                 set_icon_name (iconname_0);
+                set_tooltip_text (tooltip_text_0);
                 selected = 0;
             }
         }
