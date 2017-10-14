@@ -30,7 +30,7 @@ namespace Elememory {
             this.delete_event.connect (this.on_delete_event);
             this.destroy.connect (Gtk.main_quit);
             
-            var game_model = Model.get_instance ();
+            var game_model = Models.Game.get_instance ();
 
             // HEADER BAR
             var header = new Widgets.Header ("eleMemory");
@@ -40,11 +40,11 @@ namespace Elememory {
             var stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
 
-            var tile_field = new TileField (6);
-            stack.add_named (tile_field, "board");
+            var board = new Widgets.Board (6);
+            stack.add_named (board, "board");
 
             header.tile_field_size_changed.connect ((mode) => {
-                tile_field.repopulate (4 + mode * 2);
+                board.repopulate (4 + mode * 2);
             });
 
             add (stack);

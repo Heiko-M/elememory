@@ -32,14 +32,15 @@ ensure_vala_version("0.16" MINIMUM)
 include (ValaPrecompile)
 vala_precompile (VALA_C ${EXEC_NAME}
                  src/main.vala
-                 src/elememory.vala
+                 src/App.vala
                  src/Window.vala
+                 src/Models/Game.vala
+                 src/Models/Tile.vala
                  src/Widgets/Header.vala
-                 src/Model.vala
-                 src/tilefield.vala
-                 src/tile.vala
-                 src/fileutils.vala
+                 src/Widgets/Board.vala
+                 src/Widgets/TileView.vala
                  src/Widgets/ToggleSwitch.vala
+                 src/Utils/FileUtils.vala
 
                  PACKAGES
                  gtk+-3.0

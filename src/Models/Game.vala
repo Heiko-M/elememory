@@ -19,25 +19,25 @@
 * Authored by: Heiko Müller <mue.heiko@web.de>
 */
 
-namespace Elememory {
+namespace Elememory.Models {
     public enum PlayerMode {
         SINGLE,
         DUAL
     }
 
     /** 
-      * Singleton model of the game.
+      * Game model singleton.
       */
-    public class Model : Object {
-        private static Model? instance = null;
+    public class Game : Object {
+        private static Game? instance = null;
         public PlayerMode player_mode { get; construct set; }
         public int p1_draws { get; construct set; }
         public int p1_matches { get; construct set; }
         public int p2_draws { get; construct set; }
         public int p2_matches { get; construct set; }
-        public int[,] game_setup { get; set; }
+        public Tile[,] game_setup { get; set; }
 
-        private Model () {
+        private Game () {
             Object (
                 player_mode: PlayerMode.SINGLE,
                 p1_draws: 0,
@@ -55,9 +55,9 @@ namespace Elememory {
             }
         }
 
-        public static Model get_instance () {
+        public static Game get_instance () {
             if (instance == null) {
-                instance = new Model ();
+                instance = new Game ();
             }
             return instance;
         }
@@ -66,10 +66,10 @@ namespace Elememory {
           * Returns a 2-dimensional array which holds randomly distributed
           * pairs of numbers from 0 to width * height / 2 - 1.
           */
-        private static int[,] shuffled_motifs (int width, int height) {
+        private static Tile[,] shuffled_motifs (int width, int height) {
             int[] tile_motifs = new int[width * height / 2];
             int[] motif_taken = new int[width * height / 2];
-            int[,] arrangement = new int[height, width];
+            Tile[,] arrangement = new Tile[height, width];
 
             for (int i = 0; i < tile_motifs.length; i++) {
                 tile_motifs[i] = i;
@@ -84,7 +84,7 @@ namespace Elememory {
                         motif = tile_motifs[GLib.Random.int_range (0, tile_motifs.length)];
                     }
 
-                    arrangement[y, x] = motif;
+                    arrangement[y, x] = new Tile (motif);
                     motif_taken[motif] += 1;
                 }
             }
