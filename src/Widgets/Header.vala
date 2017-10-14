@@ -21,18 +21,18 @@
 
 namespace Elememory.Widgets {
     public class Header : Gtk.HeaderBar {
+        public ToggleSwitch player_mode_switch;
+        public ToggleSwitch highscore_switch;
         public signal void tile_field_size_changed (int mode);
 
         public Header (string title) {
             set_show_close_button (true);
             set_title (title);
 
-            /*  Player mode toggle switch  */
-            var player_mode_switch = new ToggleSwitch.with_tooltip_texts ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0, "Dualplayer", "Singleplayer");
-            this.pack_start (player_mode_switch);
+            player_mode_switch = new ToggleSwitch.with_tooltip_texts ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0, "Dualplayer", "Singleplayer");
+            highscore_switch = new ToggleSwitch.with_tooltip_texts ("elememory-highscore-symbolic", "elememory-board-symbolic", 0, "Highscore", "Game");
 
-            /*  Highscore - board toggle switch  */
-            var highscore_switch = new ToggleSwitch.with_tooltip_texts ("elememory-highscore-symbolic", "elememory-board-symbolic", 0, "Highscore", "Game");
+            this.pack_start (player_mode_switch);
             this.pack_end (highscore_switch);
         }
     }

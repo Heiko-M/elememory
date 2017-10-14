@@ -40,11 +40,11 @@ namespace Elememory {
             var stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
 
-            var board = new Widgets.Board (6);
+            var board = new Widgets.Board (4);
             stack.add_named (board, "board");
 
-            header.tile_field_size_changed.connect ((mode) => {
-                board.repopulate (4 + mode * 2);
+            header.player_mode_switch.notify["selected"].connect (() => {
+                board.repopulate (4 + header.player_mode_switch.selected * 2);
             });
 
             add (stack);
