@@ -20,11 +20,11 @@
 */
 
 namespace Elememory {
+    /**
+      * The window class defines the layout of widgets and the connection of
+      * signals.
+      */
     public class Window : Gtk.Window {
-        /**
-          * The window class defines the layout of widgets and the connection of
-          * signals.
-          */
         public Window () {
             this.set_position (Gtk.WindowPosition.CENTER);
             this.delete_event.connect (this.on_delete_event);
@@ -33,23 +33,30 @@ namespace Elememory {
             var game_model = Models.Game.get_instance ();
 
             // HEADER BAR
-            var header = new Widgets.Header ("eleMemory");
-            this.set_titlebar (header);
+            var header = new Widgets.Header (game_model.player_mode.to_string ());
+            set_titlebar (header);
 
             // WINDOW CONTENT
             var stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
 
-            var board = new Widgets.Board (4);
+            var board = new Widgets.Board ();
             stack.add_named (board, "board");
 
+            add (stack);
+            show_all ();
+
+            // CONNECTIONS
             header.player_mode_switch.notify["selected"].connect (() => {
-                board.repopulate (4 + header.player_mode_switch.selected * 2);
+                if (header.player_mode_switch.selected == 0) {
+                    game_model.player_mode = Models.PlayerMode.SINGLE;
+                } else {
+                    game_model.player_mode = Models.PlayerMode.DUAL;
+                }
+                header.set_title (game_model.player_mode.to_string ());
+                board.repopulate ();
             });
 
-            add (stack);
-
-            show_all ();
             Gtk.main ();
         }
 

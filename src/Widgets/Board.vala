@@ -20,10 +20,12 @@
 */
 
 namespace Elememory.Widgets {
+    /**
+      * The Board provides a visual representation of the setup of tiles
+      * specified in the given model of the game.
+      */
     public class Board : Gtk.Grid {
-        /** This class generates a tile field of the given even size, holding
-          * all the tiles.
-         **/
+        public Models.Game game_model;
         private TileView? tile_exposed = null;
         private string[] tile_motif_paths = new string[32];
         private string tile_backside_path;
@@ -31,7 +33,9 @@ namespace Elememory.Widgets {
         public signal void tiles_sensitive ();
         public signal void tiles_matched (int matches);
 
-        public Board (int size) {
+        public Board () {
+            game_model = Models.Game.get_instance ();
+
             margin = 6;
             column_spacing = 6;
             row_spacing = 6;
@@ -45,18 +49,16 @@ namespace Elememory.Widgets {
             tile_motif_paths = FileUtils.motif_img_paths (sys_data_dirs[2], "default", 32);
             tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/elememory/tile_schemes/default/back.png");
 
-            populate (size);
+            populate ();
 
             show();
         }
 
-        private void populate (int size) {
-            /** Populates the grid with newly created tiles. **/
-            int[,] motif_arrangement = shuffled_motifs (size);
-
-            for (int y = 0; y < size; y++) {
-                for (int x = 0; x < size; x++) {
-                    TileView tile = new TileView (motif_arrangement[y, x], this.tile_motif_paths[motif_arrangement[y, x]], this.tile_backside_path);
+        private void populate () {
+            /** Populates the grid according to the model data. **/
+            for (int y = 0; y < game_model.setup.length[0]; y++) {
+                for (int x = 0; x < game_model.setup.length[1]; x++) {
+                    TileView tile = new TileView (game_model.setup[y, x].motif, this.tile_motif_paths[game_model.setup[y, x].motif], this.tile_backside_path);
                     tile.exposed.connect ( (emitter) => { on_exposure (emitter); });
                     tiles_insensitive.connect (tile.desensitize);
                     tiles_sensitive.connect (tile.sensitize); 
@@ -66,10 +68,10 @@ namespace Elememory.Widgets {
             }
         }
 
-        public void repopulate (int size) {
+        public void repopulate () {
             /** Deletes all tiles and repopulates the grid. **/
             forall ((element) => element.destroy ());
-            populate (size);
+            populate ();
         }
 
         private void on_exposure (TileView tile) {
@@ -103,35 +105,6 @@ namespace Elememory.Widgets {
             }
 
             tile_exposed = null;
-        }
-
-        private static int[,] shuffled_motifs (int dimension) {
-            /** Returns a 2-dimensional array which holds randomly distributed
-              * pairs of numbers from 0 to dimension^2 / 2 - 1.
-             **/
-            int[] tile_motifs = new int[dimension * dimension / 2];
-            int[] motif_taken = new int[dimension * dimension / 2];
-            int[,] arrangement = new int[dimension, dimension];
-
-            for (int i = 0; i < tile_motifs.length; i++) {
-                tile_motifs[i] = i;
-                motif_taken[i] = 0;
-            }
-
-            for (int y = 0; y < dimension; y++) {
-                for (int x = 0; x < dimension; x++) {
-                    int motif = tile_motifs[GLib.Random.int_range (0, tile_motifs.length)];
-
-                    while (motif_taken[motif] >= 2) {
-                        motif = tile_motifs[GLib.Random.int_range (0, tile_motifs.length)];
-                    }
-
-                    arrangement[y, x] = motif;
-                    motif_taken[motif] += 1;
-                }
-            }
-
-            return arrangement;
         }
     }
 }

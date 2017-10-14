@@ -23,7 +23,6 @@ namespace Elememory.Widgets {
     public class Header : Gtk.HeaderBar {
         public ToggleSwitch player_mode_switch;
         public ToggleSwitch highscore_switch;
-        public signal void tile_field_size_changed (int mode);
 
         public Header (string title) {
             set_show_close_button (true);

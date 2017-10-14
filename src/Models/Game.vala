@@ -30,29 +30,28 @@ namespace Elememory.Models {
       */
     public class Game : Object {
         private static Game? instance = null;
-        public PlayerMode player_mode { get; construct set; }
-        public int p1_draws { get; construct set; }
-        public int p1_matches { get; construct set; }
-        public int p2_draws { get; construct set; }
-        public int p2_matches { get; construct set; }
-        public Tile[,] game_setup { get; set; }
+        public PlayerMode player_mode {
+            public get {
+                return _player_mode;
+            }
+            public set {
+                _player_mode = value;
+                new_setup ();
+            }
+            default = PlayerMode.SINGLE;
+        }
+        private PlayerMode _player_mode;
+        public int p1_draws { get; set; default = 0; }
+        public int p1_matches { get; set; default = 0; }
+        public int p2_draws { get; set; default = 0; }
+        public int p2_matches { get; set; default = 0; }
+        public Tile[,] setup { get; set; }
 
         private Game () {
-            Object (
-                player_mode: PlayerMode.SINGLE,
-                p1_draws: 0,
-                p1_matches: 0,
-                p2_draws: 0,
-                p2_matches: 0
-                );
         }
 
         construct {
-            if (player_mode == PlayerMode.SINGLE) {
-                game_setup = shuffled_motifs (6, 4);
-            } else {
-                game_setup = shuffled_motifs (9, 6);
-            }
+            new_setup ();
         }
 
         public static Game get_instance () {
@@ -61,12 +60,20 @@ namespace Elememory.Models {
             }
             return instance;
         }
+        
+        private void new_setup () {
+            if (player_mode == PlayerMode.SINGLE) {
+                setup = shuffled_motifs (6, 4);
+            } else {
+                setup = shuffled_motifs (9, 6);
+            }
+        }
 
         /**
           * Returns a 2-dimensional array which holds randomly distributed
           * pairs of numbers from 0 to width * height / 2 - 1.
           */
-        private static Tile[,] shuffled_motifs (int width, int height) {
+        private Tile[,] shuffled_motifs (int width, int height) {
             int[] tile_motifs = new int[width * height / 2];
             int[] motif_taken = new int[width * height / 2];
             Tile[,] arrangement = new Tile[height, width];
