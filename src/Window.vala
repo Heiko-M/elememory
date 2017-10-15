@@ -39,10 +39,12 @@ namespace Elememory {
             // WINDOW CONTENT
             var stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
-
             var board = new Widgets.Board ();
+            var highscore = new Gtk.Label ("<b>Highscore</b>\nX      100\nY      98\nZ      70");
+            highscore.use_markup = true;
+            
             stack.add_named (board, "board");
-
+            stack.add_named (highscore, "highscore");
             add (stack);
             show_all ();
 
@@ -58,6 +60,14 @@ namespace Elememory {
 
             game_model.notify.connect (() => {
                 header.update_stats ();
+            });
+            
+            header.highscore_switch.clicked.connect (() => {
+                if (header.highscore_switch.selected == 1) {
+                    stack.set_visible_child_name ("highscore");
+                } else {
+                    stack.set_visible_child_name ("board");
+                }
             });
 
             Gtk.main ();
