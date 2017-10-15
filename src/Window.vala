@@ -26,14 +26,14 @@ namespace Elememory {
       */
     public class Window : Gtk.Window {
         public Window () {
-            this.set_position (Gtk.WindowPosition.CENTER);
-            this.delete_event.connect (this.on_delete_event);
-            this.destroy.connect (Gtk.main_quit);
+            window_position = Gtk.WindowPosition.CENTER;
+            delete_event.connect (on_delete_event);
+            destroy.connect (Gtk.main_quit);
             
             var game_model = Models.Game.get_instance ();
 
             // HEADER BAR
-            var header = new Widgets.Header (game_model.player_mode.to_string ());
+            var header = new Widgets.Header ();
             set_titlebar (header);
 
             // WINDOW CONTENT
@@ -53,8 +53,11 @@ namespace Elememory {
                 } else {
                     game_model.player_mode = Models.PlayerMode.DUAL;
                 }
-                header.set_title (game_model.player_mode.to_string ());
                 board.repopulate ();
+            });
+
+            game_model.notify.connect (() => {
+                header.update_stats ();
             });
 
             Gtk.main ();

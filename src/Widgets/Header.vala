@@ -23,16 +23,28 @@ namespace Elememory.Widgets {
     public class Header : Gtk.HeaderBar {
         public ToggleSwitch player_mode_switch;
         public ToggleSwitch highscore_switch;
+        private Models.Game game_model = Models.Game.get_instance ();
 
-        public Header (string title) {
-            set_show_close_button (true);
-            set_title (title);
+        public Header () {
+            Object (show_close_button: true);
+        }
+
+        construct {
+            update_stats ();
 
             player_mode_switch = new ToggleSwitch.with_tooltip_texts ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0, "Dualplayer", "Singleplayer");
             highscore_switch = new ToggleSwitch.with_tooltip_texts ("elememory-highscore-symbolic", "elememory-board-symbolic", 0, "Highscore", "Game");
 
             this.pack_start (player_mode_switch);
             this.pack_end (highscore_switch);
+        }
+
+        public void update_stats () {
+            if (game_model.player_mode == Models.PlayerMode.SINGLE) {
+                set_title ("%d pairs out of %d draws".printf (game_model.p1_matches, game_model.p1_draws));
+            } else if (game_model.player_mode == Models.PlayerMode.DUAL) {
+                set_title ("%d pairs out of %d draws | %d pairs out of %d draws".printf (game_model.p1_matches, game_model.p1_draws, game_model.p2_matches, game_model.p2_draws));
+            }
         }
     }
 }

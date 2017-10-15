@@ -31,7 +31,6 @@ namespace Elememory.Widgets {
         private string tile_backside_path;
         public signal void tiles_insensitive ();
         public signal void tiles_sensitive ();
-        public signal void tiles_matched (int matches);
 
         public Board () {
             game_model = Models.Game.get_instance ();
@@ -89,19 +88,20 @@ namespace Elememory.Widgets {
             }
         }
 
+        /**
+          * Checks if two pairs are exposed and consequently either dismisses
+          * both or turns them face down again.
+         **/
         private void check_pair_found (TileView tile_turned) {
-            /** Checks if two pairs are exposed and consequently either dismisses
-              * both or turns them face down again.
-             **/
             if (tile_exposed.pairs_with (tile_turned)) {
                 tile_exposed.remove_from_tile_field ();
                 tile_turned.remove_from_tile_field ();
-                tiles_matched (1);
+                game_model.draw_results (true);
             }
             else {
                 tile_exposed.turn_face_down ();
                 tile_turned.turn_face_down ();
-                tiles_matched (0);
+                game_model.draw_results (false);
             }
 
             tile_exposed = null;

@@ -41,6 +41,7 @@ namespace Elememory.Models {
             default = PlayerMode.SINGLE;
         }
         private PlayerMode _player_mode;
+        public int active_player { get; set; default = GLib.Random.int_range (1, 2); }
         public int p1_draws { get; set; default = 0; }
         public int p1_matches { get; set; default = 0; }
         public int p2_draws { get; set; default = 0; }
@@ -54,6 +55,12 @@ namespace Elememory.Models {
             new_setup ();
         }
 
+        /**
+          * Returns the instance of the game model. If none exists, a new
+          * instance is generated.
+          *
+          * @return Instance of the game model.
+          */
         public static Game get_instance () {
             if (instance == null) {
                 instance = new Game ();
@@ -61,12 +68,43 @@ namespace Elememory.Models {
             return instance;
         }
         
+        /**
+          * Computes the results of one draw.
+          *
+          * @param match Whether a match was found.
+          */
+        public void draw_results (bool match) {
+            if (active_player == 1) {
+                p1_draws ++;
+                if (match) {
+                    p1_matches ++;
+                } else {
+                    if (player_mode == PlayerMode.DUAL) {
+                        active_player = 2;
+                    }
+                }
+            } else {
+                p2_draws ++;
+                if (match) {
+                    p2_matches ++;
+                } else {
+                    active_player = 1;
+                }
+            }
+        }
+
         private void new_setup () {
             if (player_mode == PlayerMode.SINGLE) {
                 setup = shuffled_motifs (6, 4);
+                active_player = 1;
             } else {
                 setup = shuffled_motifs (9, 6);
+                active_player = GLib.Random.int_range (1, 2);
             }
+            p1_draws = 0;
+            p1_matches = 0;
+            p2_draws = 0;
+            p2_matches = 0;
         }
 
         /**
