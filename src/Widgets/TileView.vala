@@ -22,15 +22,15 @@
 namespace Elememory.Widgets {
     public class TileView : Gtk.EventBox {
         /** This class represents a memory tile. **/
-        private int motif_id;
+        private Models.Tile tile_model;
         private Gtk.Image motif = new Gtk.Image ();
         private Gtk.Image backside = new Gtk.Image ();
         private bool present_in_game;
         private ulong button_press_handler_id;
         public signal void exposed ();
 
-        public TileView (int motif_id, string motif_img_path, string backside_img_path) {
-            this.motif_id = motif_id;
+        public TileView (Models.Tile tile_model, string motif_img_path, string backside_img_path) {
+            this.tile_model = tile_model;
             present_in_game = true;
 
             margin = 12;
@@ -89,12 +89,12 @@ namespace Elememory.Widgets {
 
         public bool pairs_with (TileView query_tile) {
             /** Returns true if query_tile forms pair with this tile. **/
-            return motif_id == query_tile.get_motif_id ();
+            return tile_model.motif == query_tile.get_motif_id ();
         }
 
         public int get_motif_id () {
             /** Returns this tile's motif_id. **/
-            return motif_id;
+            return tile_model.motif;
         }
     }
 }

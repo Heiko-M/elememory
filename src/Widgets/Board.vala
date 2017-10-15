@@ -57,7 +57,7 @@ namespace Elememory.Widgets {
             /** Populates the grid according to the model data. **/
             for (int y = 0; y < game_model.setup.length[0]; y++) {
                 for (int x = 0; x < game_model.setup.length[1]; x++) {
-                    TileView tile = new TileView (game_model.setup[y, x].motif, this.tile_motif_paths[game_model.setup[y, x].motif], this.tile_backside_path);
+                    TileView tile = new TileView (game_model.setup[y, x], this.tile_motif_paths[game_model.setup[y, x].motif], this.tile_backside_path);
                     tile.exposed.connect ( (emitter) => { on_exposure (emitter); });
                     tiles_insensitive.connect (tile.desensitize);
                     tiles_sensitive.connect (tile.sensitize); 
