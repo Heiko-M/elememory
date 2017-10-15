@@ -96,12 +96,12 @@ namespace Elememory.Widgets {
             if (tile_exposed.pairs_with (tile_turned)) {
                 tile_exposed.remove_from_tile_field ();
                 tile_turned.remove_from_tile_field ();
-                game_model.draw_results (true);
+                game_model.integrate_draw_results (true);
             }
             else {
                 tile_exposed.turn_face_down ();
                 tile_turned.turn_face_down ();
-                game_model.draw_results (false);
+                game_model.integrate_draw_results (false);
             }
 
             tile_exposed = null;

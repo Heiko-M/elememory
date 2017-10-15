@@ -69,11 +69,11 @@ namespace Elememory.Models {
         }
         
         /**
-          * Computes the results of one draw.
+          * Integrates the results of one draw.
           *
-          * @param match Whether a match was found.
+          * @param match Whether a match was found during that draw.
           */
-        public void draw_results (bool match) {
+        public void integrate_draw_results (bool match) {
             if (active_player == 1) {
                 p1_draws ++;
                 if (match) {
