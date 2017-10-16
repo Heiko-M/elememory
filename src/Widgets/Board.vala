@@ -22,10 +22,10 @@
 namespace Elememory.Widgets {
     /**
       * The Board provides a visual representation of the setup of tiles
-      * specified in the given model of the game.
+      * specified in the given Game model.
       */
     public class Board : Gtk.Grid {
-        public Models.Game game_model;
+        public Models.Game game;
         private TileView? tile_exposed = null;
         private string[] tile_motif_paths = new string[32];
         private string tile_backside_path;
@@ -33,7 +33,7 @@ namespace Elememory.Widgets {
         public signal void tiles_sensitive ();
 
         public Board () {
-            game_model = Models.Game.get_instance ();
+            game = Models.Game.get_instance ();
 
             margin = 6;
             column_spacing = 6;
@@ -51,14 +51,16 @@ namespace Elememory.Widgets {
             populate ();
 
             show();
+
+            game.freeze.connect (() => { tiles_insensitive (); });
+            game.resume.connect (() => { tiles_sensitive (); });
         }
 
+        /** Populates the grid according to the model data. **/
         private void populate () {
-            /** Populates the grid according to the model data. **/
-            for (int y = 0; y < game_model.setup.length[0]; y++) {
-                for (int x = 0; x < game_model.setup.length[1]; x++) {
-                    TileView tile = new TileView (game_model.setup[y, x], this.tile_motif_paths[game_model.setup[y, x].motif], this.tile_backside_path);
-                    tile.exposed.connect ( (emitter) => { on_exposure (emitter); });
+            for (int y = 0; y < game.setup.length[0]; y++) {
+                for (int x = 0; x < game.setup.length[1]; x++) {
+                    TileView tile = new TileView (game.setup[y, x], this.tile_motif_paths[game.setup[y, x].motif], this.tile_backside_path);
                     tiles_insensitive.connect (tile.desensitize);
                     tiles_sensitive.connect (tile.sensitize); 
                     tile.show ();
@@ -67,44 +69,10 @@ namespace Elememory.Widgets {
             }
         }
 
+        /** Deletes all tiles and repopulates the grid. **/
         public void repopulate () {
-            /** Deletes all tiles and repopulates the grid. **/
             forall ((element) => element.destroy ());
             populate ();
-        }
-
-        private void on_exposure (TileView tile) {
-            /** Checks for exposed tiles and initiates pair check if due. **/
-            if (tile_exposed != null) {
-                tiles_insensitive ();
-                Timeout.add_seconds (1, () => {
-                                               check_pair_found (tile);
-                                               tiles_sensitive ();
-                                               return false;
-                                              });
-            }
-            else {
-                tile_exposed = tile;
-            }
-        }
-
-        /**
-          * Checks if two pairs are exposed and consequently either dismisses
-          * both or turns them face down again.
-         **/
-        private void check_pair_found (TileView tile_turned) {
-            if (tile_exposed.pairs_with (tile_turned)) {
-                tile_exposed.remove_from_tile_field ();
-                tile_turned.remove_from_tile_field ();
-                game_model.integrate_draw_results (true);
-            }
-            else {
-                tile_exposed.turn_face_down ();
-                tile_turned.turn_face_down ();
-                game_model.integrate_draw_results (false);
-            }
-
-            tile_exposed = null;
         }
     }
 }

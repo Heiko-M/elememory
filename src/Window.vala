@@ -30,7 +30,7 @@ namespace Elememory {
             delete_event.connect (on_delete_event);
             destroy.connect (Gtk.main_quit);
             
-            var game_model = Models.Game.get_instance ();
+            var game = Models.Game.get_instance ();
 
             // HEADER BAR
             var header = new Widgets.Header ();
@@ -51,14 +51,14 @@ namespace Elememory {
             // CONNECTIONS
             header.player_mode_switch.notify["selected"].connect (() => {
                 if (header.player_mode_switch.selected == 0) {
-                    game_model.player_mode = Models.PlayerMode.SINGLE;
+                    game.player_mode = Models.PlayerMode.SINGLE;
                 } else {
-                    game_model.player_mode = Models.PlayerMode.DUAL;
+                    game.player_mode = Models.PlayerMode.DUAL;
                 }
                 board.repopulate ();
             });
 
-            game_model.notify.connect (() => {
+            game.notify.connect (() => {
                 header.update_stats ();
             });
             
@@ -68,6 +68,12 @@ namespace Elememory {
                 } else {
                     stack.set_visible_child_name ("board");
                 }
+            });
+
+            game.finished.connect (() => {
+                //TODO: evaluate score and record winner in highscore.
+                game.new_setup ();
+                board.repopulate ();
             });
 
             Gtk.main ();

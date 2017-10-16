@@ -41,6 +41,12 @@ namespace Elememory.Models {
             default = PlayerMode.SINGLE;
         }
         private PlayerMode _player_mode;
+        private Tile? tile_exposed = null;
+        
+        public signal void freeze ();
+        public signal void resume ();
+        public signal void finished ();
+
         public int active_player { get; set; default = GLib.Random.int_range (1, 2); }
         public int p1_draws { get; set; default = 0; }
         public int p1_matches { get; set; default = 0; }
@@ -91,9 +97,30 @@ namespace Elememory.Models {
                     active_player = 1;
                 }
             }
+
+            if (is_game_finished ()) {
+                finished ();
+            }
         }
 
-        private void new_setup () {
+        /**
+          * Returns true if no tiles are left on the board.
+          *
+          * @return true if no tiles left.
+          */
+        public bool is_game_finished () {
+            foreach (Tile tile in setup) {
+                if (tile.present_on_board) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
+          * Reinitializes a new setup of tiles for the current player mode.
+          */
+        public void new_setup () {
             if (player_mode == PlayerMode.SINGLE) {
                 setup = shuffled_motifs (6, 4);
                 active_player = 1;
@@ -101,10 +128,45 @@ namespace Elememory.Models {
                 setup = shuffled_motifs (9, 6);
                 active_player = GLib.Random.int_range (1, 2);
             }
+            
             p1_draws = 0;
             p1_matches = 0;
             p2_draws = 0;
             p2_matches = 0;
+
+            foreach (Tile tile in setup) {
+                tile.notify["exposed"].connect (() => {
+                    if (tile.exposed) {
+                        on_exposure (tile);
+                    }
+                });
+            }
+        }
+
+        private void on_exposure (Tile tile) {
+            if (tile_exposed == null) {
+                tile_exposed = tile;
+            } else {
+                freeze ();
+                Timeout.add_seconds (1, () => {
+                    check_pairing (tile);
+                    resume ();
+                    return false;
+                });
+            }
+        }
+
+        private void check_pairing (Tile tile_turned) {
+            if (tile_exposed.motif == tile_turned.motif) {
+                tile_exposed.present_on_board = false;
+                tile_turned.present_on_board = false;
+                integrate_draw_results (true);
+            } else {
+                tile_exposed.exposed = false;
+                tile_turned.exposed = false;
+                integrate_draw_results (false);
+            }
+            tile_exposed = null;
         }
 
         /**

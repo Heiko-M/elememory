@@ -25,7 +25,7 @@ namespace Elememory.Models {
       */
     public class Tile : Object {
         public bool exposed { get; construct set; }
-        public int motif { get; construct set; }
+        public int motif { get; construct; }
         public bool present_on_board { get; construct set; }
 
         public Tile (int motif) {

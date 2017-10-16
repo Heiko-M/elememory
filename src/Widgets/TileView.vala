@@ -20,18 +20,18 @@
 */
 
 namespace Elememory.Widgets {
+    /**
+      * The TileView constitutes a graphical and interactive representation of a
+      * Tile model.
+      */
     public class TileView : Gtk.EventBox {
-        /** This class represents a memory tile. **/
-        private Models.Tile tile_model;
+        private Models.Tile tile;
         private Gtk.Image motif = new Gtk.Image ();
         private Gtk.Image backside = new Gtk.Image ();
-        private bool present_in_game;
         private ulong button_press_handler_id;
-        public signal void exposed ();
 
-        public TileView (Models.Tile tile_model, string motif_img_path, string backside_img_path) {
-            this.tile_model = tile_model;
-            present_in_game = true;
+        public TileView (Models.Tile tile, string motif_img_path, string backside_img_path) {
+            this.tile = tile;
 
             margin = 12;
             vexpand = false;
@@ -47,18 +47,32 @@ namespace Elememory.Widgets {
             add (backside);
 
             button_press_handler_id = button_press_event.connect (() => {
-                turn_face_up ();
+                tile.exposed = true;
                 return true;
             });
+
+            tile.notify["exposed"].connect (() => {
+                if (tile.exposed) {
+                    turn_face_up ();
+                } else {
+                    turn_face_down ();
+                }
+            });
+
+            tile.notify["present_on_board"].connect (() => {
+                if (! tile.present_on_board) {
+                    remove_from_board ();
+                }
+            });
+
             show ();
         }
 
         private void turn_face_up () {
-            /** Turns the tile motif side up and emits the exposed signal. **/
+            /** Turns the tile motif side up. **/
             desensitize ();  // Block from further clicking.
             remove (backside);
             add (motif); 
-            exposed ();
         }
 
         public void turn_face_down () {
@@ -73,28 +87,17 @@ namespace Elememory.Widgets {
         }
 
         public void sensitize () {
-            if (present_in_game) {
+            if (tile.present_on_board) {
                 SignalHandler.unblock (this, button_press_handler_id);
             }
         }
 
-        public void remove_from_tile_field () {
+        public void remove_from_board () {
             /** Removes the visible representation of this tile. **/
             // XXX: It remains in the grid so no columns or rows disappear, but
             //      it's invisible and insensitive to mouse clicks.
-            remove( get_child ());
-            present_in_game = false;
+            remove(get_child ());
             disconnect (button_press_handler_id);
-        }
-
-        public bool pairs_with (TileView query_tile) {
-            /** Returns true if query_tile forms pair with this tile. **/
-            return tile_model.motif == query_tile.get_motif_id ();
-        }
-
-        public int get_motif_id () {
-            /** Returns this tile's motif_id. **/
-            return tile_model.motif;
         }
     }
 }
