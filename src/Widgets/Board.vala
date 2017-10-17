@@ -33,13 +33,17 @@ namespace Elememory.Widgets {
         public signal void tiles_sensitive ();
 
         public Board () {
-            game = Models.Game.get_instance ();
+            Object (
+                margin: 6,
+                column_spacing: 6,
+                row_spacing: 6,
+                column_homogeneous: true,
+                row_homogeneous: true
+            );
+        }
 
-            margin = 6;
-            column_spacing = 6;
-            row_spacing = 6;
-            set_column_homogeneous (true);
-            set_row_homogeneous (true);
+        construct {
+            game = Models.Game.get_instance ();
 
             // TODO: Resolve tile scheme paths on Window level, then pass the
             //       appropriate scheme paths to this.
@@ -50,13 +54,13 @@ namespace Elememory.Widgets {
 
             populate ();
 
-            show();
-
             game.freeze.connect (() => { tiles_insensitive (); });
             game.resume.connect (() => { tiles_sensitive (); });
         }
 
-        /** Populates the grid according to the model data. **/
+        /**
+          * Populates the grid according to the model data.
+          */
         private void populate () {
             for (int y = 0; y < game.setup.length[0]; y++) {
                 for (int x = 0; x < game.setup.length[1]; x++) {
@@ -69,7 +73,9 @@ namespace Elememory.Widgets {
             }
         }
 
-        /** Deletes all tiles and repopulates the grid. **/
+        /**
+          * Deletes all tiles and repopulates the grid.
+          */
         public void repopulate () {
             forall ((element) => element.destroy ());
             populate ();
