@@ -73,13 +73,39 @@ namespace Elememory.Models {
             }
             return instance;
         }
+
+        /**
+          * Reinitializes a new setup of tiles for the current player mode.
+          */
+        public void new_setup () {
+            if (player_mode == PlayerMode.SINGLE) {
+                setup = shuffled_motifs (6, 4);
+                active_player = 1;
+            } else {
+                setup = shuffled_motifs (9, 6);
+                active_player = GLib.Random.int_range (1, 2);
+            }
+            
+            p1_draws = 0;
+            p1_matches = 0;
+            p2_draws = 0;
+            p2_matches = 0;
+
+            foreach (Tile tile in setup) {
+                tile.notify["exposed"].connect (() => {
+                    if (tile.exposed) {
+                        on_exposure (tile);
+                    }
+                });
+            }
+        }
         
         /**
           * Integrates the results of one draw.
           *
           * @param match Whether a match was found during that draw.
           */
-        public void integrate_draw_results (bool match) {
+        private void consolidate_draw (bool match) {
             if (active_player == 1) {
                 p1_draws ++;
                 if (match) {
@@ -108,39 +134,13 @@ namespace Elememory.Models {
           *
           * @return true if no tiles left.
           */
-        public bool is_game_finished () {
+        private bool is_game_finished () {
             foreach (Tile tile in setup) {
                 if (tile.present_on_board) {
                     return false;
                 }
             }
             return true;
-        }
-
-        /**
-          * Reinitializes a new setup of tiles for the current player mode.
-          */
-        public void new_setup () {
-            if (player_mode == PlayerMode.SINGLE) {
-                setup = shuffled_motifs (6, 4);
-                active_player = 1;
-            } else {
-                setup = shuffled_motifs (9, 6);
-                active_player = GLib.Random.int_range (1, 2);
-            }
-            
-            p1_draws = 0;
-            p1_matches = 0;
-            p2_draws = 0;
-            p2_matches = 0;
-
-            foreach (Tile tile in setup) {
-                tile.notify["exposed"].connect (() => {
-                    if (tile.exposed) {
-                        on_exposure (tile);
-                    }
-                });
-            }
         }
 
         private void on_exposure (Tile tile) {
@@ -160,11 +160,11 @@ namespace Elememory.Models {
             if (tile_exposed.motif == tile_turned.motif) {
                 tile_exposed.present_on_board = false;
                 tile_turned.present_on_board = false;
-                integrate_draw_results (true);
+                consolidate_draw (true);
             } else {
                 tile_exposed.exposed = false;
                 tile_turned.exposed = false;
-                integrate_draw_results (false);
+                consolidate_draw (false);
             }
             tile_exposed = null;
         }

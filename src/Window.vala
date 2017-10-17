@@ -56,6 +56,7 @@ namespace Elememory {
                     game.player_mode = Models.PlayerMode.DUAL;
                 }
                 board.repopulate ();
+                resize (1, 1);
             });
 
             game.notify.connect (() => {
