@@ -64,7 +64,7 @@ namespace Elememory.Widgets {
                     tiles_insensitive.connect (tile.desensitize);
                     tiles_sensitive.connect (tile.sensitize); 
                     tile.show ();
-                    attach(tile, x, y, 1, 1);
+                    attach (tile, x, y, 1, 1);
                 }
             }
         }

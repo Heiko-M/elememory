@@ -59,7 +59,7 @@ namespace Elememory.Widgets {
                 }
             });
 
-            tile.notify["present_on_board"].connect (() => {
+            tile.notify["present-on-board"].connect (() => {
                 if (! tile.present_on_board) {
                     remove_from_board ();
                 }
@@ -96,8 +96,8 @@ namespace Elememory.Widgets {
             /** Removes the visible representation of this tile. **/
             // XXX: It remains in the grid so no columns or rows disappear, but
             //      it's invisible and insensitive to mouse clicks.
-            remove(get_child ());
             disconnect (button_press_handler_id);
+            remove(get_child ());
         }
     }
 }
