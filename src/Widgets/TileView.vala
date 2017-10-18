@@ -68,15 +68,19 @@ namespace Elememory.Widgets {
             show ();
         }
 
+        /**
+          * Turns the tile motif side up.
+          */
         private void turn_face_up () {
-            /** Turns the tile motif side up. **/
-            desensitize ();  // Block from further clicking.
+            desensitize ();
             remove (backside);
             add (motif); 
         }
 
-        public void turn_face_down () {
-            /** Turns the tile motif side down. **/
+        /**
+          * Turns the tile motif side down.
+          */
+        private void turn_face_down () {
             remove (motif);
             add (backside);
             sensitize ();
@@ -92,10 +96,12 @@ namespace Elememory.Widgets {
             }
         }
 
-        public void remove_from_board () {
-            /** Removes the visible representation of this tile. **/
-            // XXX: It remains in the grid so no columns or rows disappear, but
-            //      it's invisible and insensitive to mouse clicks.
+        /**
+          * Removes the visible representation of this tile.
+          */
+        private void remove_from_board () {
+            // It remains in the grid so no columns or rows disappear, but
+            // it's invisible and insensitive to mouse clicks.
             disconnect (button_press_handler_id);
             remove(get_child ());
         }

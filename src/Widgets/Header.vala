@@ -39,6 +39,9 @@ namespace Elememory.Widgets {
             this.pack_end (highscore_switch);
         }
 
+        /**
+          * Updates the draw statistics.
+          */
         public void update_stats () {
             if (game_model.player_mode == Models.PlayerMode.SINGLE) {
                 set_title ("%d pairs out of %d draws".printf (game_model.p1_matches, game_model.p1_draws));

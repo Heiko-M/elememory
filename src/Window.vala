@@ -25,21 +25,24 @@ namespace Elememory {
       * signals.
       */
     public class Window : Gtk.Window {
+        private Models.Game game;
+        private Widgets.Header header;
+        private Gtk.Stack stack;
+        private Widgets.Board board;
+
         public Window () {
             window_position = Gtk.WindowPosition.CENTER;
-            delete_event.connect (on_delete_event);
-            destroy.connect (Gtk.main_quit);
             
-            var game = Models.Game.get_instance ();
+            game = Models.Game.get_instance ();
 
             // HEADER BAR
-            var header = new Widgets.Header ();
+            header = new Widgets.Header ();
             set_titlebar (header);
 
             // WINDOW CONTENT
-            var stack = new Gtk.Stack ();
+            stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
-            var board = new Widgets.Board ();
+            board = new Widgets.Board ();
             var highscore = new Gtk.Label ("<b>Highscore</b>\nX      100\nY      98\nZ      70");
             highscore.use_markup = true;
             
@@ -49,6 +52,9 @@ namespace Elememory {
             show_all ();
 
             // CONNECTIONS
+            delete_event.connect (on_delete_event);
+            destroy.connect (Gtk.main_quit);
+
             header.player_mode_switch.notify["selected"].connect (() => {
                 if (header.player_mode_switch.selected == 0) {
                     game.player_mode = Models.PlayerMode.SINGLE;

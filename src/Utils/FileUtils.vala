@@ -19,19 +19,23 @@
 * Authored by: Heiko Müller <mue.heiko@web.de>
 */
 
+/**
+  * Provides functions to deal with filepaths.
+  */
 namespace Elememory.FileUtils {
-    /** Provides functions to deal with filepaths. **/
 
         // TODO: I probably need to write a function that localizes my image files by checking all the system_data_dirs returned...
         //string[] sys_data_dirs = Environment.get_system_data_dirs ();
         //print (sys_data_dirs[2]); // the third one happens to be the right one
         //tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/elememory/tile_schemes/default/back.png");
 
+    /**
+      * Returns an array of strings of file paths to the motif images.
+      */
     public string[] motif_img_paths (string sys_data_dir, string motif_set, int set_size) {
-        /** Returns an array of strings of file paths to the motif images. **/
         string[] paths = new string[32];
 
-        // TODO: Shuffle images within this function (only relevant later when playing field size is adjustable.
+        // TODO: Shuffle images within this function.
         for (int i = 0; i < set_size; i++) {
             string img_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dir, "/elememory/tile_schemes/", motif_set, @"$i.png");
             paths[i] = img_path;
@@ -40,10 +44,13 @@ namespace Elememory.FileUtils {
         return paths;
     }
 
+    /**
+      * @deprecated
+      * Returns the image path of the tile backside image.
+      */
     public string backside_img_path (string motif_set) {
-        /** Returns the image path of the tile backside image. **/
         // XXX: DEPRECATED due to installation of images in subfolder of system_data_dir...
-        string app_base_path = File.new_for_path(Environment.get_current_dir()).get_parent().get_path();
+        string app_base_path = File.new_for_path (Environment.get_current_dir ()).get_parent ().get_path ();
         string images_path = Path.build_path (Path.DIR_SEPARATOR_S, app_base_path, "images/tile_schemes", motif_set);
         string img_path = Path.build_path (Path.DIR_SEPARATOR_S, images_path, "back.png");
         return img_path;

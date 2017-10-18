@@ -23,6 +23,10 @@ namespace Elememory {
     public class App : Granite.Application {
         private Window window;
 
+        public App () {
+            //TODO: GObject-style construction á la Daniel Foré's Harvey 
+        }
+
         construct {
             program_name = "eleMemory";
             exec_name = "elememory";
@@ -44,10 +48,5 @@ namespace Elememory {
         public override void activate () {
             window = new Window();
         }
-
-        public App () {
-            //TODO: GObject-style construction á la Daniel Foré's Harvey 
-        }
-
     }
 }

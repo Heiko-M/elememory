@@ -58,6 +58,9 @@ namespace Elememory.Widgets {
                                    });
         }
 
+        /**
+          * Toggle switch state.
+          */
         public void toggle () {
             if (selected == 0) {
                 set_icon_name (iconname_1);
