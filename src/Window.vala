@@ -78,6 +78,9 @@ namespace Elememory {
             });
 
             game.finished.connect (() => {
+                var results_dialog = new Widgets.ResultsDialog (this);
+                results_dialog.show_all ();
+                results_dialog.run ();
                 //TODO: evaluate score and record winner in highscore.
                 game.new_setup ();
                 board.repopulate ();
