@@ -75,12 +75,14 @@ namespace Elememory {
                 } else {
                     stack.set_visible_child_name ("board");
                 }
-            });
-
-            game.finished.connect (() => {
+                // XXX: Move this section where it belongs
                 var results_dialog = new Widgets.ResultsDialog (this);
                 results_dialog.show_all ();
                 results_dialog.run ();
+            });
+
+            game.finished.connect (() => {
+                // XXX: Move ResultsDialog sectoin here.
                 //TODO: evaluate score and record winner in highscore.
                 game.new_setup ();
                 board.repopulate ();
@@ -90,7 +92,7 @@ namespace Elememory {
         }
 
         public bool on_delete_event () {
-            //TODO: implement save of current game status to reload on next start.
+            //TODO: implement save of highscore.
             Gtk.main_quit ();
             return false;
         }

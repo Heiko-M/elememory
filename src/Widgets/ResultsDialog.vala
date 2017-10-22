@@ -41,12 +41,18 @@ namespace Elememory.Widgets {
             var game = Models.Game.get_instance ();
 
             if (game.player_mode == Models.PlayerMode.SINGLE) {
-                var grid = new Gtk.Grid ();
-                var label = new Gtk.Label ("You scored %d matches in %d draws!".printf (game.p1_matches, game.p1_draws));
+                var stats_label = new Gtk.Label ("You've collected %d pairs in %d draws!".printf (game.p1_matches, game.p1_draws));
+                var name_label = new Gtk.Label ("Your name:");
+                var name_entry = new Gtk.Entry ();
                 var close_button = add_button ("Close", Gtk.ResponseType.CLOSE);
-                ((Gtk.Button) close_button).clicked.connect (() => destroy ());
-                grid.add (label);
+
+                var grid = new Gtk.Grid ();
+                grid.attach (stats_label, 0, 0, 2, 1);
+                grid.attach (name_label, 0, 1, 1, 1);
+                grid.attach (name_entry, 1, 1, 1, 1);
                 ((Gtk.Container) get_content_area ()).add (grid);
+
+                ((Gtk.Button) close_button).clicked.connect (() => destroy ());
             } else {
             }
         }
