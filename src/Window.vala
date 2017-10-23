@@ -29,10 +29,17 @@ namespace Elememory {
         private Widgets.Header header;
         private Gtk.Stack stack;
         private Widgets.Board board;
+        private Models.Highscore single_highscore;
+        private Models.Highscore dual_highscore;
+        private Gtk.Grid highscore_page;
+        private Widgets.HighscoreView single_highscore_view;
+        private Widgets.HighscoreView dual_highscore_view;
 
         public Window () {
             window_position = Gtk.WindowPosition.CENTER;
             
+            single_highscore = new Models.Highscore ();
+            dual_highscore = new Models.Highscore ();
             game = Models.Game.get_instance ();
 
             // HEADER BAR
@@ -43,11 +50,16 @@ namespace Elememory {
             stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             board = new Widgets.Board ();
-            var highscore = new Gtk.Label ("<b>Highscore</b>\nX      100\nY      98\nZ      70");
-            highscore.use_markup = true;
+            highscore_page = new Gtk.Grid ();
+            single_highscore_view = new Widgets.HighscoreView (single_highscore);
+            dual_highscore_view = new Widgets.HighscoreView (dual_highscore);
+            //var highscore = new Gtk.Label ("<b>Highscore</b>\nX      100\nY      98\nZ      70");
+            //highscore.use_markup = true;
             
+            highscore_page.add (single_highscore_view);
+            highscore_page.add (dual_highscore_view);
             stack.add_named (board, "board");
-            stack.add_named (highscore, "highscore");
+            stack.add_named (highscore_page, "highscore-page");
             add (stack);
             show_all ();
 
@@ -71,7 +83,7 @@ namespace Elememory {
             
             header.highscore_switch.clicked.connect (() => {
                 if (header.highscore_switch.selected == 1) {
-                    stack.set_visible_child_name ("highscore");
+                    stack.set_visible_child_name ("highscore-page");
                 } else {
                     stack.set_visible_child_name ("board");
                 }
