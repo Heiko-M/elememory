@@ -24,14 +24,15 @@ namespace Elememory.Widgets {
       * The HighscoreView provides a list view of the highscore model.
       */
     public class HighscoreView : Gtk.Grid {
-        private Models.Highscore highscore;
+        public Models.Highscore highscore { get; construct set; }
 
         public HighscoreView (Models.Highscore highscore) {
             Object (
-                margin: 12
+                margin: 12,
+                highscore: highscore
             );
 
-            this.highscore = highscore;
+            //this.highscore = highscore;
         }
 
         construct {
@@ -49,18 +50,13 @@ namespace Elememory.Widgets {
           */
         private void populate () {
             for (int i = 0; i < highscore.ranking.length; i++) {
-                //var entry = highscore.ranking[i];
-                /*
                 if (highscore.ranking[i].name == null) {
-                    //print ("Entry %d's name is null", i);
-                }
-                if (highscore.ranking[i].name == null) {
+                    print ("Entry %d's name is null", i);
                     break;
                 } else {
                     attach (new Gtk.Label (highscore.ranking[i].name), 0, i, 1, 1);
                     attach (new Gtk.Label (highscore.ranking[i].score.to_string ()), 1, i, 1, 1);
                 }
-                */
             }
         }
 
