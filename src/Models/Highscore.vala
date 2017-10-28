@@ -37,7 +37,7 @@ namespace Elememory.Models {
       * Highscore model.
       */
     public class Highscore : Object {
-        public HighscoreEntry ranking[20];
+        public HighscoreEntry[] ranking = new HighscoreEntry[20];
         public signal void updated ();
 
         public Highscore () {
@@ -76,16 +76,14 @@ namespace Elememory.Models {
           * sorted.
           */
         public void insert_entry (string name, int score) {
-            var new_entry = HighscoreEntry (name, score);
-
             bool new_entry_put = false;
 
             for (int i = ranking.length - 1; i >= 0; i--) {
                 if (ranking[i].name == null) {
                     continue;
-                } else if (ranking[i].score >= new_entry.score) {
+                } else if (ranking[i].score >= score) {
                     if (i + 1 < ranking.length) {
-                        ranking[i + 1] = new_entry;
+                        ranking[i + 1] = HighscoreEntry (name, score);
                     }
                     new_entry_put = true;
                     break;
@@ -97,7 +95,7 @@ namespace Elememory.Models {
             }
             
             if (! new_entry_put) {
-                ranking[0] = new_entry;
+                ranking[0] = HighscoreEntry (name, score);
             }
 
             updated ();
