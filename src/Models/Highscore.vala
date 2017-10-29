@@ -37,43 +37,28 @@ namespace Elememory.Models {
       * Highscore model.
       */
     public class Highscore : Object {
+        public string save_file { get; construct; }
         public HighscoreEntry[] ranking = new HighscoreEntry[20];
         public signal void updated ();
 
-        public Highscore () {
+        public Highscore (string save_file) {
+            Object (
+                save_file: save_file
+            );
         }
 
         construct {
-            insert_entry ("A", 55);
-            insert_entry ("B", 100);
-            insert_entry ("C", 93);
-            insert_entry ("D", 55);
-            insert_entry ("E", 100);
-            insert_entry ("F", 97);
-            insert_entry ("G", 55);
-            insert_entry ("H", 100);
-            insert_entry ("I", 94);
-            insert_entry ("J", 55);
-            insert_entry ("K", 100);
-            insert_entry ("L", 93);
-            insert_entry ("M", 51);
-            insert_entry ("N", 100);
-            insert_entry ("O", 93);
-            insert_entry ("P", 53);
-            insert_entry ("Q", 100);
-            insert_entry ("R", 93);
-            insert_entry ("S", 55);
-            insert_entry ("T", 100);
-            insert_entry ("KING", 200);
-            
-            for (int j = 0; j < ranking.length; j++) {
-                print ("%s\t%d\n", ranking[j].name, ranking[j].score);
-            }
+            FileUtils.read_highscore_from_file (save_file, ref ranking);
+            insert_entry ("The Almighty", 100); // XXX: for testing purposes.
         }
 
         /**
           * Inserts a new entry into the ranking so that the ranking remains
-          * sorted.
+          * sorted and emitts the updated signal. Entries which don't make it
+          * into the top 20 are lost.
+          *
+          * @param name Player's name.
+          * @param score Player's score.
           */
         public void insert_entry (string name, int score) {
             bool new_entry_put = false;
@@ -98,6 +83,7 @@ namespace Elememory.Models {
                 ranking[0] = HighscoreEntry (name, score);
             }
 
+            FileUtils.write_highscore_to_file (save_file, ranking);
             updated ();
         }
     }

@@ -38,8 +38,8 @@ namespace Elememory {
         public Window () {
             window_position = Gtk.WindowPosition.CENTER;
             
-            single_highscore = new Models.Highscore ();
-            dual_highscore = new Models.Highscore ();
+            single_highscore = new Models.Highscore ("single_highscore.json");
+            dual_highscore = new Models.Highscore ("dual_highscore.json");
             game = Models.Game.get_instance ();
 
             // HEADER BAR
@@ -53,8 +53,6 @@ namespace Elememory {
             highscore_page = new Gtk.Grid ();
             single_highscore_view = new Widgets.HighscoreView (single_highscore);
             dual_highscore_view = new Widgets.HighscoreView (dual_highscore);
-            //var highscore = new Gtk.Label ("<b>Highscore</b>\nX      100\nY      98\nZ      70");
-            //highscore.use_markup = true;
             
             highscore_page.add (single_highscore_view);
             highscore_page.add (dual_highscore_view);
@@ -94,7 +92,7 @@ namespace Elememory {
             });
 
             game.finished.connect (() => {
-                // XXX: Move ResultsDialog sectoin here.
+                // XXX: Move ResultsDialog section here.
                 //TODO: evaluate score and record winner in highscore.
                 game.new_setup ();
                 board.repopulate ();

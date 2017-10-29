@@ -31,8 +31,6 @@ namespace Elememory.Widgets {
                 margin: 12,
                 highscore: highscore
             );
-
-            //this.highscore = highscore;
         }
 
         construct {
