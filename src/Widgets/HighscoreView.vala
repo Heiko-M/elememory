@@ -49,13 +49,13 @@ namespace Elememory.Widgets {
         private void populate () {
             for (int i = 0; i < highscore.ranking.length; i++) {
                 if (highscore.ranking[i].name == null) {
-                    print ("Entry %d's name is null!\n", i);
                     break;
                 } else {
                     attach (new Gtk.Label (highscore.ranking[i].name), 0, i, 1, 1);
                     attach (new Gtk.Label (highscore.ranking[i].score.to_string ()), 1, i, 1, 1);
                 }
             }
+            show_all ();
         }
 
         /**

@@ -25,6 +25,12 @@ namespace Elememory.Models {
         DUAL
     }
 
+    public enum Player {
+        NONE,
+        LEFT,
+        RIGHT
+    }
+
     /** 
       * Game model singleton.
       */
@@ -45,9 +51,9 @@ namespace Elememory.Models {
         
         public signal void freeze ();
         public signal void resume ();
-        public signal void finished ();
+        public signal void finished (Player winner, int score);
 
-        public int active_player { get; set; default = GLib.Random.int_range (1, 2); }
+        public Player active_player { get; set; default = (Player) GLib.Random.int_range (1, 2); }
         public int p1_draws { get; set; default = 0; }
         public int p1_matches { get; set; default = 0; }
         public int p2_draws { get; set; default = 0; }
@@ -80,10 +86,10 @@ namespace Elememory.Models {
         public void new_setup () {
             if (player_mode == PlayerMode.SINGLE) {
                 setup = shuffled_motifs (6, 4);
-                active_player = 1;
+                active_player = Player.LEFT;
             } else {
                 setup = shuffled_motifs (9, 6);
-                active_player = GLib.Random.int_range (1, 2);
+                active_player = (Player) GLib.Random.int_range (1, 2);
             }
             
             p1_draws = 0;
@@ -106,13 +112,13 @@ namespace Elememory.Models {
           * @param match Whether a match was found during that draw.
           */
         private void consolidate_draw (bool match) {
-            if (active_player == 1) {
+            if (active_player == Player.LEFT) {
                 p1_draws ++;
                 if (match) {
                     p1_matches ++;
                 } else {
                     if (player_mode == PlayerMode.DUAL) {
-                        active_player = 2;
+                        active_player = Player.RIGHT;
                     }
                 }
             } else {
@@ -120,12 +126,12 @@ namespace Elememory.Models {
                 if (match) {
                     p2_matches ++;
                 } else {
-                    active_player = 1;
+                    active_player = Player.LEFT;
                 }
             }
 
             if (is_game_finished ()) {
-                finished ();
+                finished (get_winner (), get_score ());
             }
         }
 
@@ -167,6 +173,49 @@ namespace Elememory.Models {
                 consolidate_draw (false);
             }
             tile_exposed = null;
+        }
+
+        /**
+          * Returns the winner of the current game.
+          *
+          * @return The winner.
+          */
+        private Player get_winner () {
+            if (!is_game_finished ()) {
+                return Player.NONE;
+            }
+
+            if (player_mode == PlayerMode.SINGLE) {
+                return Player.LEFT;
+            } else if (p1_matches > p2_matches) {
+                return Player.LEFT;
+            } else if (p2_matches > p1_matches) {
+                return Player.RIGHT;
+            } else {
+                return Player.NONE;
+            }
+        }
+
+        /**
+          * Returns the score of the winner or -1 if there is no winner.
+          *
+          * @return The winner's score.
+          */
+        private int get_score () {
+            if (!is_game_finished ()) {
+                return -1;
+            }
+
+            if (player_mode == PlayerMode.SINGLE) {
+                assert (p1_draws != 0);
+                return p1_matches * 100 / p1_draws;
+            } else if (get_winner () == Player.LEFT) {
+                return p1_matches * 100 / (setup.length[0] * setup.length[1] / 2);
+            } else if (get_winner () == Player.RIGHT) {
+                return p2_matches * 100 / (setup.length[0] * setup.length[1] / 2);
+            } else {
+                return -1;
+            }
         }
 
         /**

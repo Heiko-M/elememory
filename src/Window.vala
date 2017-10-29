@@ -29,17 +29,15 @@ namespace Elememory {
         private Widgets.Header header;
         private Gtk.Stack stack;
         private Widgets.Board board;
-        private Models.Highscore single_highscore;
-        private Models.Highscore dual_highscore;
+        private Models.Highscore[] highscores = new Models.Highscore[2];
         private Gtk.Grid highscore_page;
-        private Widgets.HighscoreView single_highscore_view;
-        private Widgets.HighscoreView dual_highscore_view;
+        private Widgets.HighscoreView[] highscore_views = new Widgets.HighscoreView[2];
 
         public Window () {
             window_position = Gtk.WindowPosition.CENTER;
             
-            single_highscore = new Models.Highscore ("single_highscore.json");
-            dual_highscore = new Models.Highscore ("dual_highscore.json");
+            highscores[Models.PlayerMode.SINGLE] = new Models.Highscore ("single_highscore.json");
+            highscores[Models.PlayerMode.DUAL] = new Models.Highscore ("dual_highscore.json");
             game = Models.Game.get_instance ();
 
             // HEADER BAR
@@ -51,11 +49,11 @@ namespace Elememory {
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             board = new Widgets.Board ();
             highscore_page = new Gtk.Grid ();
-            single_highscore_view = new Widgets.HighscoreView (single_highscore);
-            dual_highscore_view = new Widgets.HighscoreView (dual_highscore);
+            highscore_views[Models.PlayerMode.SINGLE] = new Widgets.HighscoreView (highscores[Models.PlayerMode.SINGLE]);
+            highscore_views[Models.PlayerMode.DUAL] = new Widgets.HighscoreView (highscores[Models.PlayerMode.DUAL]);
             
-            highscore_page.add (single_highscore_view);
-            highscore_page.add (dual_highscore_view);
+            highscore_page.add (highscore_views[Models.PlayerMode.SINGLE]);
+            highscore_page.add (highscore_views[Models.PlayerMode.DUAL]);
             stack.add_named (board, "board");
             stack.add_named (highscore_page, "highscore-page");
             add (stack);
@@ -85,15 +83,15 @@ namespace Elememory {
                 } else {
                     stack.set_visible_child_name ("board");
                 }
-                // XXX: Move this section where it belongs
-                var results_dialog = new Widgets.ResultsDialog (this);
-                results_dialog.show_all ();
-                results_dialog.run ();
             });
 
-            game.finished.connect (() => {
-                // XXX: Move ResultsDialog section here.
-                //TODO: evaluate score and record winner in highscore.
+            game.finished.connect ((em, winner, score) => {
+                var results_dialog = new Widgets.ResultsDialog (this);
+                results_dialog.show_all ();
+                results_dialog.winner_identified.connect ((em, winner_name) => {
+                    highscores[game.player_mode].insert_entry (winner_name, score);
+                });
+                results_dialog.run ();
                 game.new_setup ();
                 board.repopulate ();
             });
@@ -102,7 +100,6 @@ namespace Elememory {
         }
 
         public bool on_delete_event () {
-            //TODO: implement save of highscore.
             Gtk.main_quit ();
             return false;
         }

@@ -49,7 +49,6 @@ namespace Elememory.Models {
 
         construct {
             FileUtils.read_highscore_from_file (save_file, ref ranking);
-            insert_entry ("The Almighty", 100); // XXX: for testing purposes.
         }
 
         /**

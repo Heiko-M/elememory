@@ -25,6 +25,8 @@ namespace Elememory.Widgets {
       * applicable.
       */
     public class ResultsDialog : Gtk.Dialog {
+        private Gtk.Entry name_entry;
+        public signal void winner_identified (string winner);
 
         public ResultsDialog (Gtk.Window parent) {
             Object (
@@ -32,6 +34,7 @@ namespace Elememory.Widgets {
                 destroy_with_parent: true,
                 resizable: false,
                 title: "Congrats!",
+                modal: true,
                 transient_for: parent,
                 window_position: Gtk.WindowPosition.CENTER_ON_PARENT
             );
@@ -43,7 +46,7 @@ namespace Elememory.Widgets {
             if (game.player_mode == Models.PlayerMode.SINGLE) {
                 var stats_label = new Gtk.Label ("You've collected %d pairs in %d draws!".printf (game.p1_matches, game.p1_draws));
                 var name_label = new Gtk.Label ("Your name:");
-                var name_entry = new Gtk.Entry ();
+                name_entry = new Gtk.Entry ();
                 var close_button = add_button ("Close", Gtk.ResponseType.CLOSE);
 
                 var grid = new Gtk.Grid ();
@@ -53,7 +56,15 @@ namespace Elememory.Widgets {
                 ((Gtk.Container) get_content_area ()).add (grid);
 
                 ((Gtk.Button) close_button).clicked.connect (() => destroy ());
+
+                response.connect (on_response);
             } else {
+            }
+        }
+
+        private void on_response (Gtk.Dialog source, int response_id) {
+            if (response_id == Gtk.ResponseType.CLOSE) {
+                winner_identified (name_entry.text);
             }
         }
     }
