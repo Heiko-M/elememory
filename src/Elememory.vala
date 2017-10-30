@@ -32,7 +32,6 @@ namespace Elememory {
       * Enumeration of players. In singleplayer mode Player.LEFT is the player.
       */
     public enum Player {
-        NONE,
         LEFT,
         RIGHT
     }

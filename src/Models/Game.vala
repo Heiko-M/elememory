@@ -52,8 +52,8 @@ namespace Elememory.Models {
         }
 
         construct {
-            draws = new int[3];
-            pairs = new int[3];
+            draws = new int[2];
+            pairs = new int[2];
             new_setup ();
         }
 
@@ -121,6 +121,7 @@ namespace Elememory.Models {
             stats_changed ();
 
             if (is_game_finished ()) {
+                assert_false (get_winner () == null);  // Even in dual mode, Odd number of tile pairs should always result in a winner.
                 finished (get_winner (), get_score ());
             }
         }
@@ -170,10 +171,9 @@ namespace Elememory.Models {
           *
           * @return The winner.
           */
-        //TODO: Instead of returning Player.NONE return null if no winner.
-        public Player get_winner () {
-            if (!is_game_finished ()) {
-                return Player.NONE;
+        public Player? get_winner () {
+            if (! is_game_finished ()) {
+                return null;
             }
 
             if (player_mode == PlayerMode.SINGLE) {
@@ -183,7 +183,7 @@ namespace Elememory.Models {
             } else if (pairs[Player.RIGHT] > pairs[Player.LEFT]) {
                 return Player.RIGHT;
             } else {
-                return Player.NONE;
+                return null;
             }
         }
 
@@ -193,7 +193,7 @@ namespace Elememory.Models {
           * @return The winner's score.
           */
         private int get_score () {
-            if (!is_game_finished ()) {
+            if (! is_game_finished ()) {
                 return -1;
             }
 

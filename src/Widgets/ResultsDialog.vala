@@ -54,8 +54,13 @@ namespace Elememory.Widgets {
                 stats_label = new Gtk.Label ("You've collected %d pairs in %d draws!".printf (game.pairs[Player.LEFT], game.draws[Player.LEFT]));
 
             } else {
-                var winner = game.get_winner ();
-                stats_label = new Gtk.Label ("The winner collected %d of all %d pairs!".printf (game.pairs[winner], 27));
+                Player? winner = game.get_winner ();
+                if (winner != null) {
+                    stats_label = new Gtk.Label ("The winner collected %d of all %d pairs!".printf (game.pairs[(Player) winner], 27));
+                } else {
+                    stats_label = new Gtk.Label ("No winner could be determined!");
+                    debug ("ResultsDialog created although no winner (received null).");
+                }
             }
 
             var score_label = new Gtk.Label ("Score: %d".printf (score));
