@@ -44,9 +44,9 @@ namespace Elememory.Widgets {
           */
         public void update_stats () {
             if (game_model.player_mode == Models.PlayerMode.SINGLE) {
-                set_title ("%d pairs out of %d draws".printf (game_model.p1_matches, game_model.p1_draws));
+                set_title ("%d pairs out of %d draws".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT]));
             } else if (game_model.player_mode == Models.PlayerMode.DUAL) {
-                set_title ("%d pairs out of %d draws | %d pairs out of %d draws".printf (game_model.p1_matches, game_model.p1_draws, game_model.p2_matches, game_model.p2_draws));
+                set_title ("%d pairs out of %d draws | %d pairs out of %d draws".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT], game_model.pairs[Player.RIGHT], game_model.draws[Player.RIGHT]));
             }
         }
     }

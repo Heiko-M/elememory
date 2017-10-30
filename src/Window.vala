@@ -73,7 +73,7 @@ namespace Elememory {
                 resize (1, 1);
             });
 
-            game.notify.connect (() => {
+            game.stats_changed.connect (() => {
                 header.update_stats ();
             });
             
@@ -86,7 +86,7 @@ namespace Elememory {
             });
 
             game.finished.connect ((em, winner, score) => {
-                var results_dialog = new Widgets.ResultsDialog (this);
+                var results_dialog = new Widgets.ResultsDialog (this, score, highscores[game.player_mode].is_relevant_for_highscore (score));
                 results_dialog.show_all ();
                 results_dialog.winner_identified.connect ((em, winner_name) => {
                     highscores[game.player_mode].insert_entry (winner_name, score);

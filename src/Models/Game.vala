@@ -25,12 +25,6 @@ namespace Elememory.Models {
         DUAL
     }
 
-    public enum Player {
-        NONE,
-        LEFT,
-        RIGHT
-    }
-
     /** 
       * Game model singleton.
       */
@@ -52,18 +46,19 @@ namespace Elememory.Models {
         public signal void freeze ();
         public signal void resume ();
         public signal void finished (Player winner, int score);
+        public signal void stats_changed ();
 
         public Player active_player { get; set; default = (Player) GLib.Random.int_range (1, 2); }
-        public int p1_draws { get; set; default = 0; }
-        public int p1_matches { get; set; default = 0; }
-        public int p2_draws { get; set; default = 0; }
-        public int p2_matches { get; set; default = 0; }
+        public int[] draws { get; private set; }
+        public int[] pairs { get; private set; }
         public Tile[,] setup { get; set; }
 
         private Game () {
         }
 
         construct {
+            draws = new int[3];
+            pairs = new int[3];
             new_setup ();
         }
 
@@ -81,7 +76,8 @@ namespace Elememory.Models {
         }
 
         /**
-          * Reinitializes a new setup of tiles for the current player mode.
+          * Reinitializes a new setup of tiles for the current player mode and
+          * resets the stats.
           */
         public void new_setup () {
             if (player_mode == PlayerMode.SINGLE) {
@@ -92,10 +88,7 @@ namespace Elememory.Models {
                 active_player = (Player) GLib.Random.int_range (1, 2);
             }
             
-            p1_draws = 0;
-            p1_matches = 0;
-            p2_draws = 0;
-            p2_matches = 0;
+            reset_stats ();
 
             foreach (Tile tile in setup) {
                 tile.notify["exposed"].connect (() => {
@@ -113,18 +106,18 @@ namespace Elememory.Models {
           */
         private void consolidate_draw (bool match) {
             if (active_player == Player.LEFT) {
-                p1_draws ++;
+                draws[Player.LEFT] ++;
                 if (match) {
-                    p1_matches ++;
+                    pairs[Player.LEFT] ++;
                 } else {
                     if (player_mode == PlayerMode.DUAL) {
                         active_player = Player.RIGHT;
                     }
                 }
             } else {
-                p2_draws ++;
+                draws[Player.RIGHT] ++;
                 if (match) {
-                    p2_matches ++;
+                    pairs[Player.RIGHT] ++;
                 } else {
                     active_player = Player.LEFT;
                 }
@@ -133,6 +126,8 @@ namespace Elememory.Models {
             if (is_game_finished ()) {
                 finished (get_winner (), get_score ());
             }
+
+            stats_changed ();
         }
 
         /**
@@ -180,16 +175,17 @@ namespace Elememory.Models {
           *
           * @return The winner.
           */
-        private Player get_winner () {
+        //TODO: Instead of returning Player.NONE return null if no winner.
+        public Player get_winner () {
             if (!is_game_finished ()) {
                 return Player.NONE;
             }
 
             if (player_mode == PlayerMode.SINGLE) {
                 return Player.LEFT;
-            } else if (p1_matches > p2_matches) {
+            } else if (pairs[Player.LEFT] > pairs[Player.RIGHT]) {
                 return Player.LEFT;
-            } else if (p2_matches > p1_matches) {
+            } else if (pairs[Player.RIGHT] > pairs[Player.LEFT]) {
                 return Player.RIGHT;
             } else {
                 return Player.NONE;
@@ -207,15 +203,28 @@ namespace Elememory.Models {
             }
 
             if (player_mode == PlayerMode.SINGLE) {
-                assert (p1_draws != 0);
-                return p1_matches * 100 / p1_draws;
+                assert (draws[Player.LEFT] != 0);
+                return pairs[Player.LEFT] * 100 / draws[Player.LEFT];
             } else if (get_winner () == Player.LEFT) {
-                return p1_matches * 100 / (setup.length[0] * setup.length[1] / 2);
+                return pairs[Player.LEFT] * 100 / (setup.length[0] * setup.length[1] / 2);
+                //TODO: eliminate redundant code here.
             } else if (get_winner () == Player.RIGHT) {
-                return p2_matches * 100 / (setup.length[0] * setup.length[1] / 2);
+                return pairs[Player.RIGHT] * 100 / (setup.length[0] * setup.length[1] / 2);
             } else {
                 return -1;
             }
+        }
+
+        /**
+          * Resets draws and pairs of players.
+          */
+        public void reset_stats () {
+            draws[Player.LEFT] = 0;
+            draws[Player.RIGHT] = 0;
+            pairs[Player.LEFT] = 0;
+            pairs[Player.RIGHT] = 0;
+
+            stats_changed ();
         }
 
         /**
