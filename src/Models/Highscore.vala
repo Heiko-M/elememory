@@ -53,8 +53,8 @@ namespace Elememory.Models {
 
         /**
           * Inserts a new entry into the ranking so that the ranking remains
-          * sorted and emitts the updated signal. Entries which don't make it
-          * into the top 20 are lost.
+          * sorted and emitts the updated signal. Entries which thereby loose
+          * their top 20 spot are lost.
           *
           * @param name Player's name.
           * @param score Player's score.
@@ -84,6 +84,16 @@ namespace Elememory.Models {
 
             FileUtils.write_highscore_to_file (save_file, ranking);
             updated ();
+        }
+
+        /**
+          * Returns true if the given score would make it into the top 20.
+          *
+          * @param score Score to check.
+          * @return True if relevant for highscore.
+          */
+        public bool is_relevant_for_highscore (int score) {
+            return score > ranking[ranking.length - 1].score;
         }
     }
 }

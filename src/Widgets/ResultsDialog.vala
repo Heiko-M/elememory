@@ -25,41 +25,56 @@ namespace Elememory.Widgets {
       * applicable.
       */
     public class ResultsDialog : Gtk.Dialog {
+        public int score { get; construct; }
+        public bool show_name_entry { get; construct; }
         private Gtk.Entry name_entry;
-        public signal void winner_identified (string winner);
+        public signal void winner_identified (string winner_name);
 
-        public ResultsDialog (Gtk.Window parent) {
+        public ResultsDialog (Gtk.Window parent, int score, bool show_name_entry) {
             Object (
                 deletable: false,
                 destroy_with_parent: true,
                 resizable: false,
-                title: "Congrats!",
+                title: "Game finished!",
                 modal: true,
                 transient_for: parent,
-                window_position: Gtk.WindowPosition.CENTER_ON_PARENT
+                window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
+                show_name_entry: show_name_entry,
+                score: score
             );
         }
 
         construct {
             var game = Models.Game.get_instance ();
+            
+            var grid = new Gtk.Grid ();
+            Gtk.Label stats_label;
 
             if (game.player_mode == Models.PlayerMode.SINGLE) {
-                var stats_label = new Gtk.Label ("You've collected %d pairs in %d draws!".printf (game.p1_matches, game.p1_draws));
+                stats_label = new Gtk.Label ("You've collected %d pairs in %d draws!".printf (game.pairs[Player.LEFT], game.draws[Player.LEFT]));
+
+            } else {
+                var winner = game.get_winner ();
+                stats_label = new Gtk.Label ("The winner collected %d of all %d pairs!".printf (game.pairs[winner], 27));
+            }
+
+            var score_label = new Gtk.Label ("Score: %d".printf (score));
+
+            grid.attach (stats_label, 0, 0, 2, 1);
+            grid.attach (score_label, 0, 1, 2, 1);
+
+            if (show_name_entry) {
                 var name_label = new Gtk.Label ("Your name:");
                 name_entry = new Gtk.Entry ();
-                var close_button = add_button ("Close", Gtk.ResponseType.CLOSE);
-
-                var grid = new Gtk.Grid ();
-                grid.attach (stats_label, 0, 0, 2, 1);
-                grid.attach (name_label, 0, 1, 1, 1);
-                grid.attach (name_entry, 1, 1, 1, 1);
-                ((Gtk.Container) get_content_area ()).add (grid);
-
-                ((Gtk.Button) close_button).clicked.connect (() => destroy ());
-
-                response.connect (on_response);
-            } else {
+                grid.attach (name_label, 0, 2, 1, 1);
+                grid.attach (name_entry, 1, 2, 1, 1);
             }
+
+            ((Gtk.Container) get_content_area ()).add (grid);
+
+            var close_button = add_button ("Close", Gtk.ResponseType.CLOSE);
+            ((Gtk.Button) close_button).clicked.connect (() => destroy ());
+            response.connect (on_response);
         }
 
         private void on_response (Gtk.Dialog source, int response_id) {
