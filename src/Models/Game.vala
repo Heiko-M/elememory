@@ -123,11 +123,11 @@ namespace Elememory.Models {
                 }
             }
 
+            stats_changed ();
+
             if (is_game_finished ()) {
                 finished (get_winner (), get_score ());
             }
-
-            stats_changed ();
         }
 
         /**
