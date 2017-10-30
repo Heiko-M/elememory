@@ -20,11 +20,6 @@
 */
 
 namespace Elememory.Models {
-    public enum PlayerMode {
-        SINGLE,
-        DUAL
-    }
-
     /** 
       * Game model singleton.
       */

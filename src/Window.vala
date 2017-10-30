@@ -36,8 +36,8 @@ namespace Elememory {
         public Window () {
             window_position = Gtk.WindowPosition.CENTER;
             
-            highscores[Models.PlayerMode.SINGLE] = new Models.Highscore ("single_highscore.json");
-            highscores[Models.PlayerMode.DUAL] = new Models.Highscore ("dual_highscore.json");
+            highscores[PlayerMode.SINGLE] = new Models.Highscore ("single_highscore.json");
+            highscores[PlayerMode.DUAL] = new Models.Highscore ("dual_highscore.json");
             game = Models.Game.get_instance ();
 
             // HEADER BAR
@@ -49,11 +49,11 @@ namespace Elememory {
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             board = new Widgets.Board ();
             highscore_page = new Gtk.Grid ();
-            highscore_views[Models.PlayerMode.SINGLE] = new Widgets.HighscoreView (highscores[Models.PlayerMode.SINGLE]);
-            highscore_views[Models.PlayerMode.DUAL] = new Widgets.HighscoreView (highscores[Models.PlayerMode.DUAL]);
+            highscore_views[PlayerMode.SINGLE] = new Widgets.HighscoreView (highscores[PlayerMode.SINGLE]);
+            highscore_views[PlayerMode.DUAL] = new Widgets.HighscoreView (highscores[PlayerMode.DUAL]);
             
-            highscore_page.add (highscore_views[Models.PlayerMode.SINGLE]);
-            highscore_page.add (highscore_views[Models.PlayerMode.DUAL]);
+            highscore_page.add (highscore_views[PlayerMode.SINGLE]);
+            highscore_page.add (highscore_views[PlayerMode.DUAL]);
             stack.add_named (board, "board");
             stack.add_named (highscore_page, "highscore-page");
             add (stack);
@@ -65,9 +65,9 @@ namespace Elememory {
 
             header.player_mode_switch.notify["selected"].connect (() => {
                 if (header.player_mode_switch.selected == 0) {
-                    game.player_mode = Models.PlayerMode.SINGLE;
+                    game.player_mode = PlayerMode.SINGLE;
                 } else {
-                    game.player_mode = Models.PlayerMode.DUAL;
+                    game.player_mode = PlayerMode.DUAL;
                 }
                 board.repopulate ();
                 resize (1, 1);

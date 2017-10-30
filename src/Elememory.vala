@@ -1,4 +1,3 @@
-
 /*
 * Copyright (c) 2017 Heiko Müller (https://github.com/heiko-m)
 *
@@ -21,6 +20,14 @@
 */
 
 namespace Elememory {
+    /**
+      * Enumeration of play modes.
+      */
+    public enum PlayerMode {
+        SINGLE,
+        DUAL
+    }
+
     /**
       * Enumeration of players. In singleplayer mode Player.LEFT is the player.
       */

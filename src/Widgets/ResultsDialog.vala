@@ -50,7 +50,7 @@ namespace Elememory.Widgets {
             var grid = new Gtk.Grid ();
             Gtk.Label stats_label;
 
-            if (game.player_mode == Models.PlayerMode.SINGLE) {
+            if (game.player_mode == PlayerMode.SINGLE) {
                 stats_label = new Gtk.Label ("You've collected %d pairs in %d draws!".printf (game.pairs[Player.LEFT], game.draws[Player.LEFT]));
 
             } else {
