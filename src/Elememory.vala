@@ -33,6 +33,14 @@ namespace Elememory {
       */
     public enum Player {
         LEFT,
-        RIGHT
+        RIGHT;
+
+        public Player other () {
+            if (this == LEFT) {
+                return RIGHT;
+            } else {
+                return LEFT;
+            }
+        }
     }
 }

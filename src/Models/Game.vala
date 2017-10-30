@@ -43,7 +43,7 @@ namespace Elememory.Models {
         public signal void finished (Player winner, int score);
         public signal void stats_changed ();
 
-        public Player active_player { get; set; default = (Player) GLib.Random.int_range (1, 2); }
+        public Player active_player { get; set; default = (Player) GLib.Random.int_range (0, 2); }
         public int[] draws { get; private set; }
         public int[] pairs { get; private set; }
         public Tile[,] setup { get; set; }
@@ -80,7 +80,7 @@ namespace Elememory.Models {
                 active_player = Player.LEFT;
             } else {
                 setup = shuffled_motifs (9, 6);
-                active_player = (Player) GLib.Random.int_range (1, 2);
+                active_player = (Player) GLib.Random.int_range (0, 2);
             }
             
             reset_stats ();
@@ -100,28 +100,20 @@ namespace Elememory.Models {
           * @param match Whether a match was found during that draw.
           */
         private void consolidate_draw (bool match) {
-            if (active_player == Player.LEFT) {
-                draws[Player.LEFT] ++;
-                if (match) {
-                    pairs[Player.LEFT] ++;
-                } else {
-                    if (player_mode == PlayerMode.DUAL) {
-                        active_player = Player.RIGHT;
-                    }
-                }
+            draws[active_player] ++;
+
+            if (match) {
+                pairs[active_player] ++;
             } else {
-                draws[Player.RIGHT] ++;
-                if (match) {
-                    pairs[Player.RIGHT] ++;
-                } else {
-                    active_player = Player.LEFT;
+                if (player_mode == PlayerMode.DUAL) {
+                    active_player = active_player.other ();
                 }
             }
 
             stats_changed ();
 
             if (is_game_finished ()) {
-                assert_false (get_winner () == null);  // Even in dual mode, Odd number of tile pairs should always result in a winner.
+                assert_false (get_winner () == null);
                 finished (get_winner (), get_score ());
             }
         }
@@ -167,9 +159,9 @@ namespace Elememory.Models {
         }
 
         /**
-          * Returns the winner of the current game.
+          * Returns the winner of the current game or null if none exists yet.
           *
-          * @return The winner.
+          * @return The winner or null.
           */
         public Player? get_winner () {
             if (! is_game_finished ()) {
@@ -183,6 +175,8 @@ namespace Elememory.Models {
             } else if (pairs[Player.RIGHT] > pairs[Player.LEFT]) {
                 return Player.RIGHT;
             } else {
+                // In dual mode, odd number of tile pairs should always result in a winner.
+                assert_not_reached ();
                 return null;
             }
         }
@@ -190,7 +184,7 @@ namespace Elememory.Models {
         /**
           * Returns the score of the winner or -1 if there is no winner.
           *
-          * @return The winner's score.
+          * @return The winner's score or -1.
           */
         private int get_score () {
             if (! is_game_finished ()) {
@@ -200,11 +194,8 @@ namespace Elememory.Models {
             if (player_mode == PlayerMode.SINGLE) {
                 assert (draws[Player.LEFT] != 0);
                 return pairs[Player.LEFT] * 100 / draws[Player.LEFT];
-            } else if (get_winner () == Player.LEFT) {
-                return pairs[Player.LEFT] * 100 / (setup.length[0] * setup.length[1] / 2);
-                //TODO: eliminate redundant code here.
-            } else if (get_winner () == Player.RIGHT) {
-                return pairs[Player.RIGHT] * 100 / (setup.length[0] * setup.length[1] / 2);
+            } else if (get_winner () != null) {
+                return pairs[(Player) get_winner ()] * 100 / (setup.length[0] * setup.length[1] / 2);
             } else {
                 return -1;
             }
