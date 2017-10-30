@@ -3,5 +3,5 @@
 
 Features:
 * [x]  Single player and 1 vs. 1
-* [ ]  Highscore
+* [x]  Highscore
 * [ ]  Unlock new tile schemes
