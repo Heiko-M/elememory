@@ -113,7 +113,7 @@ namespace Elememory.Models {
             stats_changed ();
 
             if (is_game_finished ()) {
-                assert_false (get_winner () == null);
+                assert_true (get_winner () != null);
                 finished (get_winner (), get_score ());
             }
         }
@@ -165,6 +165,7 @@ namespace Elememory.Models {
           */
         public Player? get_winner () {
             if (! is_game_finished ()) {
+                debug ("Winner inquired when game was not finished yet!");
                 return null;
             }
 
