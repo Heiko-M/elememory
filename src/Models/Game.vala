@@ -113,7 +113,6 @@ namespace Elememory.Models {
             stats_changed ();
 
             if (is_game_finished ()) {
-                assert_true (get_winner () != null);
                 finished (get_winner (), get_score ());
             }
         }
