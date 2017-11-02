@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="elememory-dualplayer-symbolic.svg">
+   sodipodi:docname="elememory-dualplayer-right-symbolic.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,17 +25,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="38.90625"
-     inkscape:cx="1.7688142"
-     inkscape:cy="7.273076"
+     inkscape:zoom="16.467303"
+     inkscape:cx="-10.026446"
+     inkscape:cy="4.84402"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      units="px"
-     inkscape:window-width="2560"
-     inkscape:window-height="1407"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="2560"
+     inkscape:window-y="183"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -58,7 +58,7 @@
      id="layer2"
      inkscape:label="Player_right">
     <path
-       style="fill:#666666;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#666666;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 9.996168,6.003626 c 1.666518,0.75331 3.333038,0.737278 4.999556,1 -0.122088,2.543796 0.106604,6.53524 -1.992234,8.00081 C 8.74088,14.480818 7.060494,13.663548 6.988362,11.997074 Z"
        id="path6219"
        inkscape:connector-curvature="0"
@@ -74,11 +74,11 @@
      id="layer1"
      transform="translate(0,-1036.3622)">
     <path
-       style="fill:#666666;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#666666;fill-opacity:0.40000001;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 6.0000005,1039.8622 a 2.5,2.5 0 0 1 -2.5,2.5 2.5,2.5 0 0 1 -2.5,-2.5 2.5,2.5 0 0 1 2.5,-2.5 2.5,2.5 0 0 1 2.5,2.5 z"
        id="path6217" />
     <path
-       style="fill:#666666;fill-rule:nonzero;stroke:none;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       style="fill:#666666;fill-rule:nonzero;stroke:none;stroke-width:0.2px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:0.40000001"
        d="m 5.9992465,1042.3594 c -1.972627,0.6245 -2.965948,1.0213 -4.99738,0.9989 -0.1944308,2.5393 0.0914,6.2951 1.9922105,8.0097 4.29464,0.01 5.724617,-1.3599 6.00293,-3.0045 z"
        id="path6241"
        inkscape:connector-curvature="0"

@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="elememory-dualplayer-symbolic.svg">
+   sodipodi:docname="elememory-dualplayer-left-symbolic.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,11 +25,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="38.90625"
-     inkscape:cx="1.7688142"
+     inkscape:zoom="28.718355"
+     inkscape:cx="-5.6851353"
      inkscape:cy="7.273076"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="true"
      units="px"
      inkscape:window-width="2560"
@@ -58,13 +58,13 @@
      id="layer2"
      inkscape:label="Player_right">
     <path
-       style="fill:#666666;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="fill:#666666;fill-opacity:0.40000001;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 9.996168,6.003626 c 1.666518,0.75331 3.333038,0.737278 4.999556,1 -0.122088,2.543796 0.106604,6.53524 -1.992234,8.00081 C 8.74088,14.480818 7.060494,13.663548 6.988362,11.997074 Z"
        id="path6219"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#666666;fill-opacity:1;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
+       style="fill:#666666;fill-opacity:0.40000001;stroke:none;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
        d="m 15.000001,3.5000088 a 2.5,2.5 0 0 1 -2.5,2.5 2.5,2.5 0 0 1 -2.5,-2.5 2.5,2.5 0 0 1 2.5,-2.5 2.5,2.5 0 0 1 2.5,2.5 z"
        id="path6217-5" />
   </g>

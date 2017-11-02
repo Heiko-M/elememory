@@ -43,4 +43,16 @@ namespace Elememory {
             }
         }
     }
+
+    /**
+      * Iconnames
+      */
+    public const string ICONNAME_SINGLEPLAYER = "elememory-singleplayer-symbolic";
+    public const string ICONNAME_DUALPLAYER = "elememory-dualplayer-symbolic";
+
+    public const string[] ICONNAMES_DUALPLAYER_ACTIVE = {
+        "elememory-dualplayer-left-symbolic",
+        "elememory-dualplayer-right-symbolic"
+    };
+    public const string ICONNAME_SINGLEPLAYER_ACTIVE = ICONNAME_SINGLEPLAYER;
 }

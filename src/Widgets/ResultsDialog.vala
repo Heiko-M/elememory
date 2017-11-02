@@ -69,12 +69,19 @@ namespace Elememory.Widgets {
             grid.attach (score_label, 0, 1, 2, 1);
 
             if (show_name_entry) {
-                var name_label = new Gtk.Label ("Your name:");
+                Gtk.Image winner_icon;
+                if (game.player_mode == PlayerMode.DUAL) {
+                    winner_icon = new Gtk.Image.from_icon_name (ICONNAMES_DUALPLAYER_ACTIVE[(Player) game.get_winner ()], Gtk.IconSize.SMALL_TOOLBAR);
+                } else {
+                    winner_icon = new Gtk.Image.from_icon_name (ICONNAME_SINGLEPLAYER_ACTIVE, Gtk.IconSize.SMALL_TOOLBAR);
+                }
                 name_entry = new Gtk.Entry ();
+                name_entry.placeholder_text = "Enter name...";
                 name_entry.max_length = 20;
                 name_entry.input_purpose = Gtk.InputPurpose.NAME;
                 name_entry.activates_default = true;
-                grid.attach (name_label, 0, 2, 1, 1);
+
+                grid.attach (winner_icon, 0, 2, 1, 1);
                 grid.attach (name_entry, 1, 2, 1, 1);
             }
 

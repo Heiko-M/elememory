@@ -5,6 +5,8 @@ install (FILES 16x16/elememory-highscore-symbolic.svg DESTINATION ${CMAKE_INSTAL
 install (FILES 16x16/elememory-board-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/actions)
 install (FILES 16x16/elememory-singleplayer-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/actions)
 install (FILES 16x16/elememory-dualplayer-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/actions)
+install (FILES 16x16/elememory-dualplayer-left-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/actions)
+install (FILES 16x16/elememory-dualplayer-right-symbolic.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/16x16/actions)
 
 install(
     CODE
