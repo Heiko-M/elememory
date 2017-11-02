@@ -49,8 +49,9 @@ namespace Elememory {
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             board = new Widgets.Board ();
             highscore_page = new Gtk.Grid ();
-            highscore_views[PlayerMode.SINGLE] = new Widgets.HighscoreView (highscores[PlayerMode.SINGLE]);
-            highscore_views[PlayerMode.DUAL] = new Widgets.HighscoreView (highscores[PlayerMode.DUAL]);
+            highscore_page.column_homogeneous = true;
+            highscore_views[PlayerMode.SINGLE] = new Widgets.HighscoreView (highscores[PlayerMode.SINGLE], "Single player mode");
+            highscore_views[PlayerMode.DUAL] = new Widgets.HighscoreView (highscores[PlayerMode.DUAL], "Dual player mode");
             
             highscore_page.add (highscore_views[PlayerMode.SINGLE]);
             highscore_page.add (highscore_views[PlayerMode.DUAL]);

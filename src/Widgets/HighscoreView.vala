@@ -24,12 +24,16 @@ namespace Elememory.Widgets {
       * The HighscoreView provides a list view of the highscore model.
       */
     public class HighscoreView : Gtk.Grid {
-        public Models.Highscore highscore { get; construct set; }
+        public Models.Highscore highscore { get; construct; }
+        public string title { get; construct; }
 
-        public HighscoreView (Models.Highscore highscore) {
+        public HighscoreView (Models.Highscore highscore, string title) {
             Object (
-                margin: 12,
-                highscore: highscore
+                margin: 24,
+                row_spacing: 6,
+                halign: Gtk.Align.CENTER,
+                highscore: highscore,
+                title: title
             );
         }
 
@@ -47,12 +51,22 @@ namespace Elememory.Widgets {
           * Populates the highscore list according to the highscore model.
           */
         private void populate () {
+            var title_label = new Gtk.Label (title);
+            title_label.margin = 10;
+
+            attach (title_label, 0, 0, 2, 1);
+
             for (int i = 0; i < highscore.ranking.length; i++) {
                 if (highscore.ranking[i].name == null) {
                     break;
                 } else {
-                    attach (new Gtk.Label (highscore.ranking[i].name), 0, i, 1, 1);
-                    attach (new Gtk.Label (highscore.ranking[i].score.to_string ()), 1, i, 1, 1);
+                    var name_label = new Gtk.Label ("%2d.  %s".printf (i + 1, highscore.ranking[i].name));
+                    name_label.halign = Gtk.Align.START;
+                    var score_label = new Gtk.Label ("  %3d".printf (highscore.ranking[i].score));
+                    score_label.halign = Gtk.Align.END;
+
+                    attach (name_label, 0, i + 1, 1, 1);
+                    attach (score_label, 1, i + 1, 1, 1);
                 }
             }
             show_all ();
