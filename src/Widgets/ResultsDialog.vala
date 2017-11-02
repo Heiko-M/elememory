@@ -71,6 +71,9 @@ namespace Elememory.Widgets {
             if (show_name_entry) {
                 var name_label = new Gtk.Label ("Your name:");
                 name_entry = new Gtk.Entry ();
+                name_entry.max_length = 20;
+                name_entry.input_purpose = Gtk.InputPurpose.NAME;
+                name_entry.activates_default = true;
                 grid.attach (name_label, 0, 2, 1, 1);
                 grid.attach (name_entry, 1, 2, 1, 1);
             }
@@ -78,6 +81,8 @@ namespace Elememory.Widgets {
             ((Gtk.Container) get_content_area ()).add (grid);
 
             var close_button = add_button ("Close", Gtk.ResponseType.CLOSE);
+            set_default (close_button);
+
             ((Gtk.Button) close_button).clicked.connect (() => destroy ());
             response.connect (on_response);
         }
