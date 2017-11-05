@@ -36,10 +36,24 @@ namespace Elememory {
         RIGHT;
 
         public Player other () {
-            if (this == LEFT) {
-                return RIGHT;
-            } else {
-                return LEFT;
+            switch (this) {
+                case LEFT:
+                    return RIGHT;
+                case RIGHT:
+                    return LEFT;
+                default:
+                    assert_not_reached ();
+            }
+        }
+
+        public string to_string () {
+            switch (this) {
+                case LEFT:
+                    return "Player to the left";
+                case RIGHT:
+                    return "Player to the right";
+                default:
+                    assert_not_reached ();
             }
         }
     }

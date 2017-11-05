@@ -23,22 +23,25 @@ namespace Elememory.Widgets {
     /** 
       * Dialog presenting stats and allowing for name input for highscore if
       * applicable.
+      * @deprecated   //...for now.
       */
-    public class ResultsDialog : Gtk.Dialog {
+    public class ResultsDialog : Granite.MessageDialog {
         public int score { get; construct; }
         public bool show_name_entry { get; construct; }
-        private Gtk.Entry name_entry;
+        public Gtk.Entry name_entry;
         public signal void winner_identified (string winner_name);
 
         public ResultsDialog (Gtk.Window parent, int score, bool show_name_entry) {
             Object (
-                deletable: false,
-                destroy_with_parent: true,
                 resizable: false,
-                title: "Game finished!",
+                deletable: false,
+                skip_taskbar_hint: true,
                 modal: true,
                 transient_for: parent,
+                destroy_with_parent: true,
                 window_position: Gtk.WindowPosition.CENTER_ON_PARENT,
+                buttons: Gtk.ButtonsType.CANCEL,
+                image_icon: new ThemedIcon ("dialog-information"),
                 show_name_entry: show_name_entry,
                 score: score
             );
@@ -47,28 +50,26 @@ namespace Elememory.Widgets {
         construct {
             var game = Models.Game.get_instance ();
             
-            var grid = new Gtk.Grid ();
-            Gtk.Label stats_label;
 
             if (game.player_mode == PlayerMode.SINGLE) {
-                stats_label = new Gtk.Label ("You've collected %d pairs in %d draws!".printf (game.pairs[Player.LEFT], game.draws[Player.LEFT]));
-
+                primary_text = "Well played, you made it into the highscore!";
+                secondary_text = "%d pairs in %d draws, that's a score of <b>%d</b>. Enter your name to be recorded in the highscore.".printf (game.pairs[Player.LEFT], game.draws[Player.LEFT], score);
+                secondary_label.use_markup = true;
             } else {
                 Player? winner = game.get_winner ();
                 if (winner != null) {
-                    stats_label = new Gtk.Label ("The winner collected %d of all %d pairs!".printf (game.pairs[(Player) winner], 27));
+                    primary_text = "Congratulations! The winner reached a score of %d!".printf (score);
+                    secondary_text = "He collected %d of all %d pairs!".printf (game.pairs[(Player) winner], 27);
                 } else {
-                    stats_label = new Gtk.Label ("No winner could be determined!");
+                    primary_text = "No winner could be determined!";
+                    secondary_text = "This dialog must have been created accidentaly.";
                     debug ("ResultsDialog created although no winner (received null).");
                 }
             }
 
-            var score_label = new Gtk.Label ("Score: %d".printf (score));
-
-            grid.attach (stats_label, 0, 0, 2, 1);
-            grid.attach (score_label, 0, 1, 2, 1);
 
             if (show_name_entry) {
+                var custom_widgets_grid = new Gtk.Grid ();
                 Gtk.Image winner_icon;
                 if (game.player_mode == PlayerMode.DUAL) {
                     winner_icon = new Gtk.Image.from_icon_name (ICONNAMES_DUALPLAYER_ACTIVE[(Player) game.get_winner ()], Gtk.IconSize.SMALL_TOOLBAR);
@@ -78,26 +79,16 @@ namespace Elememory.Widgets {
                 name_entry = new Gtk.Entry ();
                 name_entry.placeholder_text = "Enter name...";
                 name_entry.max_length = 20;
-                name_entry.input_purpose = Gtk.InputPurpose.NAME;
                 name_entry.activates_default = true;
 
-                grid.attach (winner_icon, 0, 2, 1, 1);
-                grid.attach (name_entry, 1, 2, 1, 1);
+                custom_widgets_grid.attach (winner_icon, 0, 0, 1, 1);
+                custom_widgets_grid.attach (name_entry, 1, 0, 1, 1);
+                custom_bin.add (custom_widgets_grid);
             }
 
-            ((Gtk.Container) get_content_area ()).add (grid);
-
-            var close_button = add_button ("Close", Gtk.ResponseType.CLOSE);
-            set_default (close_button);
-
-            ((Gtk.Button) close_button).clicked.connect (() => destroy ());
-            response.connect (on_response);
-        }
-
-        private void on_response (Gtk.Dialog source, int response_id) {
-            if (response_id == Gtk.ResponseType.CLOSE) {
-                winner_identified (name_entry.text);
-            }
+            var accept_button = add_button ("Record my name", Gtk.ResponseType.ACCEPT);
+            accept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            //set_default (close_button);
         }
     }
 }

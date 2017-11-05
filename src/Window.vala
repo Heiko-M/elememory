@@ -74,9 +74,7 @@ namespace Elememory {
                 resize (1, 1);
             });
 
-            game.stats_changed.connect (() => {
-                header.update_stats ();
-            });
+            game.stats_changed.connect (header.update_stats);
             
             header.highscore_switch.clicked.connect (() => {
                 if (header.highscore_switch.selected == 1) {
@@ -87,17 +85,106 @@ namespace Elememory {
             });
 
             game.finished.connect ((em, winner, score) => {
-                var results_dialog = new Widgets.ResultsDialog (this, score, highscores[game.player_mode].is_relevant_for_highscore (score));
-                results_dialog.show_all ();
-                results_dialog.winner_identified.connect ((em, winner_name) => {
-                    highscores[game.player_mode].insert_entry (winner_name, score);
-                });
-                results_dialog.run ();
+                if (highscores[game.player_mode].is_relevant_for_highscore (score)) {
+                    string? winner_name = show_results_dialog_with_name_prompt (winner, score);
+                    if (winner_name != null) {
+                        highscores[game.player_mode].insert_entry (winner_name, score);
+                    }
+                } else {
+                    show_results_dialog (winner, score);
+                }
                 game.new_setup ();
                 board.repopulate ();
             });
 
             Gtk.main ();
+        }
+
+        /**
+          * Shows dialog presenting the winner's stats and prompting him for his
+          * name.
+          */
+        private string? show_results_dialog_with_name_prompt (Player winner, int score) {
+            string? winner_name = null;
+            string primary_text;
+            string secondary_text;
+
+            if (game.player_mode == PlayerMode.SINGLE) {
+                primary_text = "Congratulations! Your score: %d".printf (score);
+                secondary_text = "Enter your name below to be recorded in the highscore ranking.";
+            } else {
+                primary_text = "%s won! Score: %d".printf (winner.to_string (), score);
+                secondary_text = "Enter your name below to be recorded in the highscore ranking.";
+            }
+            
+            var results_dialog = new Granite.MessageDialog.with_image_from_icon_name (primary_text, secondary_text, "dialog-information", Gtk.ButtonsType.NONE);
+            results_dialog.transient_for = this;
+            results_dialog.destroy_with_parent = true;
+            results_dialog.modal = true;
+
+            var custom_widgets_grid = new Gtk.Grid ();
+            Gtk.Image winner_icon;
+            if (game.player_mode == PlayerMode.DUAL) {
+                winner_icon = new Gtk.Image.from_icon_name (ICONNAMES_DUALPLAYER_ACTIVE[winner], Gtk.IconSize.SMALL_TOOLBAR);
+            } else {
+                winner_icon = new Gtk.Image.from_icon_name (ICONNAME_SINGLEPLAYER_ACTIVE, Gtk.IconSize.SMALL_TOOLBAR);
+            }
+            winner_icon.margin_end = 6;
+            var name_entry = new Gtk.Entry ();
+            name_entry.placeholder_text = "Enter name";
+            name_entry.max_length = 20;
+            name_entry.activates_default = true;
+
+            custom_widgets_grid.attach (winner_icon, 0, 0, 1, 1);
+            custom_widgets_grid.attach (name_entry, 1, 0, 1, 1);
+            results_dialog.custom_bin.add (custom_widgets_grid);
+
+            var decline_button = results_dialog.add_button ("No, Thanks", Gtk.ResponseType.CLOSE);
+            var accept_button = results_dialog.add_button ("Record My Name", Gtk.ResponseType.ACCEPT);
+            accept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
+            accept_button.sensitive = false;
+            results_dialog.set_default (accept_button);
+
+            results_dialog.show_all ();
+
+            name_entry.changed.connect (() => {
+                accept_button.sensitive = (name_entry.text != "");
+            });
+
+            if (results_dialog.run () == Gtk.ResponseType.ACCEPT) {
+                winner_name = name_entry.text;
+            }
+
+            results_dialog.destroy ();
+
+            return winner_name;
+        }
+
+        /**
+          * Shows dialog presenting the winner's stats.
+          */
+        private void show_results_dialog (Player winner, int score) {
+            string primary_text;
+            string secondary_text;
+
+            if (game.player_mode == PlayerMode.SINGLE) {
+                primary_text = "Well played! Your score: %d".printf (score);
+                secondary_text = "Try again using less draws to make it into the highscore.";
+            } else {
+                primary_text = "%s won! Score: %d".printf (winner.to_string (), score);
+                secondary_text = "Try again collecting more of the available pairs to make it into the highscore.";
+            }
+
+            var results_dialog = new Granite.MessageDialog.with_image_from_icon_name (primary_text, secondary_text, "dialog-information", Gtk.ButtonsType.CLOSE);
+            results_dialog.transient_for = this;
+            results_dialog.destroy_with_parent = true;
+            results_dialog.modal = true;
+
+            results_dialog.show_all ();
+
+            if (results_dialog.run () == Gtk.ResponseType.CLOSE) {
+                results_dialog.destroy ();
+            }
         }
 
         public bool on_delete_event () {
