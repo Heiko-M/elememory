@@ -39,5 +39,11 @@ namespace Elememory {
         public override void activate () {
             window = new Window();
         }
+
+        public static int main (string[] args) {
+            Gtk.init (ref args);
+            var app = new Elememory.App ();
+            return app.run (args);
+        }
     }
 }

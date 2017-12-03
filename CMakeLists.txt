@@ -33,7 +33,6 @@ ensure_vala_version("0.16" MINIMUM)
 
 include (ValaPrecompile)
 vala_precompile (VALA_C ${EXEC_NAME}
-                 src/main.vala
                  src/App.vala
                  src/Window.vala
                  src/Elememory.vala
