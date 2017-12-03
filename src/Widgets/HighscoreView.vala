@@ -29,8 +29,8 @@ namespace Elememory.Widgets {
 
         public HighscoreView (Models.Highscore highscore, string title) {
             Object (
-                margin: 24,
-                row_spacing: 6,
+                margin: 30,
+                row_spacing: 10,
                 halign: Gtk.Align.CENTER,
                 highscore: highscore,
                 title: title
@@ -52,21 +52,28 @@ namespace Elememory.Widgets {
           */
         private void populate () {
             var title_label = new Gtk.Label (title);
-            title_label.margin = 10;
+            title_label.get_style_context ().add_class ("h2");
+            title_label.margin_bottom = 10;
 
-            attach (title_label, 0, 0, 2, 1);
+            attach (title_label, 0, 0, 3, 1);
 
             for (int i = 0; i < highscore.ranking.length; i++) {
                 if (highscore.ranking[i].name == null) {
                     break;
                 } else {
-                    var name_label = new Gtk.Label ("%2d.  %s".printf (i + 1, highscore.ranking[i].name));
+                    var rank_label = new Gtk.Label ("%d.".printf (i + 1));
+                    rank_label.margin_end = 12;
+                    rank_label.halign = Gtk.Align.END;
+                    var name_label = new Gtk.Label ("%s".printf (highscore.ranking[i].name));
+                    name_label.margin_end = 12;
                     name_label.halign = Gtk.Align.START;
-                    var score_label = new Gtk.Label ("  %3d".printf (highscore.ranking[i].score));
+                    var score_label = new Gtk.Label ("%d".printf (highscore.ranking[i].score));
+                    score_label.margin_end = 8;
                     score_label.halign = Gtk.Align.END;
 
-                    attach (name_label, 0, i + 1, 1, 1);
-                    attach (score_label, 1, i + 1, 1, 1);
+                    attach (rank_label, 0, i + 1, 1, 1);
+                    attach (name_label, 1, i + 1, 1, 1);
+                    attach (score_label, 2, i + 1, 1, 1);
                 }
             }
             show_all ();
