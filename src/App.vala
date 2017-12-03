@@ -24,16 +24,8 @@ namespace Elememory {
         private Window window;
 
         public App () {
-            //TODO: GObject-style construction á la Daniel Foré's Harvey 
-        }
-
-        construct {
-            program_name = "eleMemory";
-            exec_name = "com.github.heiko-m.elememory";
-            build_version = "0.2";
-            build_version_info = "Alpha";
-            app_launcher = "com.github.heiko-m.elememory.desktop";
-            application_id = "com.github.heiko-m.elememory";
+            Object (application_id: "com.github.heiko-m.elememory",
+                    flags: ApplicationFlags.FLAGS_NONE);
         }
 
         public override void activate () {
