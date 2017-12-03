@@ -59,6 +59,11 @@ namespace Elememory.Widgets {
 
             for (int i = 0; i < highscore.ranking.length; i++) {
                 if (highscore.ranking[i].name == null) {
+                    if (i == 0) {
+                        var placeholder_label = new Gtk.Label ("<i>n/a</i>");
+                        placeholder_label.use_markup = true;
+                        attach (placeholder_label, 0, 1, 3, 1);
+                    }
                     break;
                 } else {
                     var rank_label = new Gtk.Label ("%d.".printf (i + 1));
