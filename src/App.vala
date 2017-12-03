@@ -31,8 +31,8 @@ namespace Elememory {
             program_name = "eleMemory";
             exec_name = "elememory";
             app_years = "2017";
-            build_version = "0.1a";
-            build_version_info = "Alpha version";
+            build_version = "0.2";
+            build_version_info = "Alpha";
             app_launcher = "elememory.desktop";
             app_icon = "application-default-icon";
             application_id = "elememory.app";

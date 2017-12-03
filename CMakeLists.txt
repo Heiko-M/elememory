@@ -10,9 +10,9 @@ set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
 set (PKGDATADIR "${DATADIR}/elememory")
 
 set (EXEC_NAME "elememory")
-set (RELEASE_NAME "eleMemory 0.1a")
-set (VERSION "0.1a")
-set (VERSION_INFO "Alpha version")
+set (RELEASE_NAME "eleMemory 0.2")
+set (VERSION "0.2")
+set (VERSION_INFO "Alpha")
 
 find_package (PkgConfig)
 
