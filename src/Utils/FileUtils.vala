@@ -37,7 +37,7 @@ namespace Elememory.FileUtils {
 
         // TODO: Shuffle images within this function.
         for (int i = 0; i < set_size; i++) {
-            string img_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dir, "/elememory/tile_schemes/", motif_set, @"$i.png");
+            string img_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dir, "/com.github.heiko-m.elememory/tile_schemes/", motif_set, @"$i.png");
             paths[i] = img_path;
         }
 

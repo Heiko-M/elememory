@@ -50,7 +50,7 @@ namespace Elememory.Widgets {
             string[] sys_data_dirs = Environment.get_system_data_dirs ();
             //print (sys_data_dirs[2]); // 3rd one happens to be the right one
             tile_motif_paths = FileUtils.motif_img_paths (sys_data_dirs[2], "default", 32);
-            tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/elememory/tile_schemes/default/back.png");
+            tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/com.github.heiko-m.elememory/tile_schemes/default/back.png");
 
             populate ();
 

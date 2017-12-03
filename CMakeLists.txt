@@ -7,9 +7,9 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/src)
 
 set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
 
-set (PKGDATADIR "${DATADIR}/elememory")
+set (PKGDATADIR "${DATADIR}/com.github.heiko-m.elememory")
 
-set (EXEC_NAME "elememory")
+set (EXEC_NAME "com.github.heiko-m.elememory")
 set (RELEASE_NAME "eleMemory 0.2")
 set (VERSION "0.2")
 set (VERSION_INFO "Alpha")
@@ -61,4 +61,4 @@ add_subdirectory (icons)
 
 install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
 
-install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/elememory.desktop DESTINATION ${DATADIR}/applications/)
+install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.heiko-m.elememory.desktop DESTINATION ${DATADIR}/applications/)

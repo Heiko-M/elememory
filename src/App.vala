@@ -29,11 +29,11 @@ namespace Elememory {
 
         construct {
             program_name = "eleMemory";
-            exec_name = "elememory";
+            exec_name = "com.github.heiko-m.elememory";
             build_version = "0.2";
             build_version_info = "Alpha";
-            app_launcher = "elememory.desktop";
-            application_id = "elememory.app";
+            app_launcher = "com.github.heiko-m.elememory.desktop";
+            application_id = "com.github.heiko-m.elememory";
         }
 
         public override void activate () {
