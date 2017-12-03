@@ -38,7 +38,7 @@ namespace Elememory.Models {
       */
     public class Highscore : Object {
         public string save_file { get; construct; }
-        public HighscoreEntry[] ranking = new HighscoreEntry[20];
+        public HighscoreEntry[] ranking = new HighscoreEntry[12];
         public signal void updated ();
 
         public Highscore (string save_file) {
@@ -54,7 +54,7 @@ namespace Elememory.Models {
         /**
           * Inserts a new entry into the ranking so that the ranking remains
           * sorted and emitts the updated signal. Entries which thereby loose
-          * their top 20 spot are lost.
+          * their top 12 spot are lost.
           *
           * @param name Player's name.
           * @param score Player's score.
@@ -87,7 +87,7 @@ namespace Elememory.Models {
         }
 
         /**
-          * Returns true if the given score would make it into the top 20.
+          * Returns true if the given score would make it into the top 12.
           *
           * @param score Score to check.
           * @return True if relevant for highscore.

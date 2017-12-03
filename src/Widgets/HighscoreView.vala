@@ -29,8 +29,8 @@ namespace Elememory.Widgets {
 
         public HighscoreView (Models.Highscore highscore, string title) {
             Object (
-                margin: 30,
-                row_spacing: 10,
+                margin: 60,
+                row_spacing: 12,
                 halign: Gtk.Align.CENTER,
                 highscore: highscore,
                 title: title
@@ -53,7 +53,7 @@ namespace Elememory.Widgets {
         private void populate () {
             var title_label = new Gtk.Label (title);
             title_label.get_style_context ().add_class ("h2");
-            title_label.margin_bottom = 10;
+            title_label.margin_bottom = 12;
 
             attach (title_label, 0, 0, 3, 1);
 
