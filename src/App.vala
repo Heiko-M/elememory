@@ -30,19 +30,10 @@ namespace Elememory {
         construct {
             program_name = "eleMemory";
             exec_name = "elememory";
-            app_years = "2017";
             build_version = "0.2";
             build_version_info = "Alpha";
             app_launcher = "elememory.desktop";
-            app_icon = "application-default-icon";
             application_id = "elememory.app";
-            main_url = "https://github.com/Heiko-M/elememory";
-            bug_url = "https://github.com/Heiko-M/elememory/issues";
-            translate_url = "https://github.com/Heiko-M/elememory";
-            about_authors = {"Heiko Müller <mue.heiko@web.de>"};
-            about_artists = {"Heiko Müller <mue.heiko@web.de>"};
-            about_license_type = Gtk.License.GPL_3_0;
-            about_comments = "A small memory game app for elementary OS.";
         }
 
         public override void activate () {

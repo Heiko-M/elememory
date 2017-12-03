@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Heiko Müller <mue.heiko@web.de> -->
+<component type="desktop">
+    <id>com.github.heiko-m.elememory.desktop</id>
+    <metadata_license>CC0</metadata_license>
+    <project_license>GPL-3.0+</project_license>
+    <name>eleMemory</name>
+    <summary>Play memory alone or against a friend</summary>
+    <description>
+        <p>
+            eleMemory lets you play memory alone or locally against a friend.
+            It also keeps highscores.
+        </p>
+    </description>
+    <provides>com.github.heiko-m.elememory</provides>
+    <developer_name>Heiko Müller</developer_name>
+    <url type="homepage">https://github.com/Heiko-M/elememory</url>
+    <url type="bugtracker">https://github.com/Heiko-M/elememory/issues</url>
+</component>
