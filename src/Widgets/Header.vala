@@ -37,6 +37,8 @@ namespace Elememory.Widgets {
 
             this.pack_start (player_mode_switch);
             this.pack_end (highscore_switch);
+
+            get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
         }
 
         /**
