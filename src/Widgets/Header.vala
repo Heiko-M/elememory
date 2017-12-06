@@ -23,6 +23,9 @@ namespace Elememory.Widgets {
     public class Header : Gtk.HeaderBar {
         public ToggleSwitch player_mode_switch;
         public ToggleSwitch highscore_switch;
+        public Gtk.Stack stack;
+        private Gtk.Label stats_indicator;
+        private Gtk.Label highscore_title;
         private Models.Game game_model = Models.Game.get_instance ();
 
         public Header () {
@@ -30,15 +33,33 @@ namespace Elememory.Widgets {
         }
 
         construct {
-            update_stats ();
-
             player_mode_switch = new ToggleSwitch.with_tooltip_texts ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0, "Dualplayer", "Singleplayer");
             highscore_switch = new ToggleSwitch.with_tooltip_texts ("elememory-highscore-symbolic", "elememory-board-symbolic", 0, "Highscore", "Game");
+            stack = new Gtk.Stack ();
+            stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+            stats_indicator = new Gtk.Label (null);
+            stats_indicator.use_markup = true;
+            highscore_title = new Gtk.Label ("");
 
-            this.pack_start (player_mode_switch);
-            this.pack_end (highscore_switch);
+            pack_start (player_mode_switch);
+            pack_end (highscore_switch);
+            stack.add_named (stats_indicator, "stats-indicator");
+            stack.add_named (highscore_title, "highscore-title");
+            custom_title = stack; 
 
             get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
+
+            update_stats ();
+
+            highscore_switch.clicked.connect (() => {
+                if (highscore_switch.selected == 1) {
+                    stack.set_visible_child_name ("highscore-title");
+                    player_mode_switch.sensitive = false;
+                } else {
+                    stack.set_visible_child_name ("stats-indicator");
+                    player_mode_switch.sensitive = true;
+                }
+            });
         }
 
         /**
@@ -46,9 +67,9 @@ namespace Elememory.Widgets {
           */
         public void update_stats () {
             if (game_model.player_mode == PlayerMode.SINGLE) {
-                set_title ("%d pairs out of %d draws".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT]));
+                stats_indicator.label = "<b>%d pairs</b> out of <b>%d draws</b>".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT]);
             } else if (game_model.player_mode == PlayerMode.DUAL) {
-                set_title ("%d pairs out of %d draws | %d pairs out of %d draws".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT], game_model.pairs[Player.RIGHT], game_model.draws[Player.RIGHT]));
+                stats_indicator.label =  "<b>%d pairs</b> out of <b>%d draws</b>   |   <b>%d pairs</b> out of <b>%d draws</b>".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT], game_model.pairs[Player.RIGHT], game_model.draws[Player.RIGHT]);
             }
         }
     }
