@@ -40,6 +40,7 @@ vala_precompile (VALA_C ${EXEC_NAME}
                  src/Models/Tile.vala
                  src/Models/Highscore.vala
                  src/Widgets/Header.vala
+                 src/Widgets/StatsIndicator.vala
                  src/Widgets/Board.vala
                  src/Widgets/TileView.vala
                  src/Widgets/ToggleSwitch.vala

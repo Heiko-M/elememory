@@ -20,13 +20,16 @@
 */
 
 namespace Elememory.Widgets {
+    /**
+      * The header bar consisting of player mode switch, stats indicator and highscore
+      * switch.
+      */
     public class Header : Gtk.HeaderBar {
         public ToggleSwitch player_mode_switch;
         public ToggleSwitch highscore_switch;
         public Gtk.Stack stack;
-        private Gtk.Label stats_indicator;
+        public StatsIndicator stats_indicator;
         private Gtk.Label highscore_title;
-        private Models.Game game_model = Models.Game.get_instance ();
 
         public Header () {
             Object (show_close_button: true);
@@ -37,8 +40,7 @@ namespace Elememory.Widgets {
             highscore_switch = new ToggleSwitch.with_tooltip_texts ("elememory-highscore-symbolic", "elememory-board-symbolic", 0, "Highscore", "Game");
             stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
-            stats_indicator = new Gtk.Label (null);
-            stats_indicator.use_markup = true;
+            stats_indicator = new StatsIndicator ();
             highscore_title = new Gtk.Label ("");
 
             pack_start (player_mode_switch);
@@ -49,7 +51,7 @@ namespace Elememory.Widgets {
 
             get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
 
-            update_stats ();
+            stats_indicator.update_stats ();
 
             highscore_switch.clicked.connect (() => {
                 if (highscore_switch.selected == 1) {
@@ -60,17 +62,6 @@ namespace Elememory.Widgets {
                     player_mode_switch.sensitive = true;
                 }
             });
-        }
-
-        /**
-          * Updates the draw statistics.
-          */
-        public void update_stats () {
-            if (game_model.player_mode == PlayerMode.SINGLE) {
-                stats_indicator.label = "<b>%d pairs</b> out of <b>%d draws</b>".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT]);
-            } else if (game_model.player_mode == PlayerMode.DUAL) {
-                stats_indicator.label =  "<b>%d pairs</b> out of <b>%d draws</b>   |   <b>%d pairs</b> out of <b>%d draws</b>".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT], game_model.pairs[Player.RIGHT], game_model.draws[Player.RIGHT]);
-            }
         }
     }
 }

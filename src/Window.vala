@@ -74,7 +74,7 @@ namespace Elememory {
                 resize (1, 1);
             });
 
-            game.stats_changed.connect (header.update_stats);
+            game.stats_changed.connect (header.stats_indicator.update_stats);
             
             header.highscore_switch.clicked.connect (() => {
                 if (header.highscore_switch.selected == 1) {
