@@ -84,6 +84,7 @@ namespace Elememory.Models {
             }
             
             reset_stats ();
+            tile_exposed = null;
 
             foreach (Tile tile in setup) {
                 tile.notify["exposed"].connect (() => {

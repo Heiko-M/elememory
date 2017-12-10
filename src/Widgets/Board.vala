@@ -26,7 +26,6 @@ namespace Elememory.Widgets {
       */
     public class Board : Gtk.Grid {
         public Models.Game game;
-        private TileView? tile_exposed = null;
         private string[] tile_motif_paths = new string[32];
         private string tile_backside_path;
         public signal void tiles_insensitive ();
