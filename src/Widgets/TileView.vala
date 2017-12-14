@@ -25,23 +25,30 @@ namespace Elememory.Widgets {
       * Tile model.
       */
     public class TileView : Gtk.EventBox {
-        private Models.Tile tile;
-        private Gtk.Image motif = new Gtk.Image ();
+        public Models.Tile tile { get; construct; }
+        public string scheme { get; construct; }
+        public int motif { get; construct; }
+        private Gtk.Image motif_side = new Gtk.Image ();
         private Gtk.Image backside = new Gtk.Image ();
         private ulong button_press_handler_id;
 
-        public TileView (Models.Tile tile, string scheme, int motif_name) {
-            this.tile = tile;
-
-            margin = 12;
-            vexpand = false;
-            valign = Gtk.Align.CENTER;
-            hexpand = false;
-            halign = Gtk.Align.CENTER;
-            set_visible_window (false);
-
-            motif.set_from_resource ("/com/github/heiko-m/elememory/tile-schemes/%s/%d.png".printf(scheme, motif_name));
-            motif.show ();
+        public TileView (Models.Tile tile, string scheme, int motif) {
+            Object (
+                margin: 12,
+                vexpand: false,
+                hexpand: false,
+                valign: Gtk.Align.CENTER,
+                halign: Gtk.Align.CENTER,
+                visible_window: false,
+                tile: tile,
+                scheme: scheme,
+                motif: motif
+                );
+        }
+        
+        construct {
+            motif_side.set_from_resource ("/com/github/heiko-m/elememory/tile-schemes/%s/%d.png".printf(scheme, motif));
+            motif_side.show ();
             backside.set_from_resource ("/com/github/heiko-m/elememory/tile-schemes/%s/back.png".printf(scheme));
             backside.show ();
             add (backside);
@@ -74,14 +81,14 @@ namespace Elememory.Widgets {
         private void turn_face_up () {
             desensitize ();
             remove (backside);
-            add (motif); 
+            add (motif_side); 
         }
 
         /**
           * Turns the tile motif side down.
           */
         private void turn_face_down () {
-            remove (motif);
+            remove (motif_side);
             add (backside);
             sensitize ();
         }
