@@ -30,7 +30,7 @@ namespace Elememory.Widgets {
         private Gtk.Image backside = new Gtk.Image ();
         private ulong button_press_handler_id;
 
-        public TileView (Models.Tile tile, string motif_img_path, string backside_img_path) {
+        public TileView (Models.Tile tile, string scheme, int motif_name) {
             this.tile = tile;
 
             margin = 12;
@@ -40,9 +40,9 @@ namespace Elememory.Widgets {
             halign = Gtk.Align.CENTER;
             set_visible_window (false);
 
-            motif.set_from_file (motif_img_path);
+            motif.set_from_resource ("/com/github/heiko-m/elememory/tile-schemes/%s/%d.png".printf(scheme, motif_name));
             motif.show ();
-            backside.set_from_file (backside_img_path);
+            backside.set_from_resource ("/com/github/heiko-m/elememory/tile-schemes/%s/back.png".printf(scheme));
             backside.show ();
             add (backside);
 

@@ -26,8 +26,6 @@ namespace Elememory.Widgets {
       */
     public class Board : Gtk.Grid {
         public Models.Game game;
-        private string[] tile_motif_paths = new string[32];
-        private string tile_backside_path;
         public signal void tiles_insensitive ();
         public signal void tiles_sensitive ();
 
@@ -44,13 +42,6 @@ namespace Elememory.Widgets {
         construct {
             game = Models.Game.get_instance ();
 
-            // TODO: Resolve tile scheme paths on Window level, then pass the
-            //       appropriate scheme paths to this.
-            string[] sys_data_dirs = Environment.get_system_data_dirs ();
-            //print (sys_data_dirs[2]); // 3rd one happens to be the right one
-            tile_motif_paths = FileUtils.motif_img_paths (sys_data_dirs[2], "default", 32);
-            tile_backside_path = Path.build_path (Path.DIR_SEPARATOR_S, sys_data_dirs[2], "/com.github.heiko-m.elememory/tile_schemes/default/back.png");
-
             populate ();
 
             game.freeze.connect (() => { tiles_insensitive (); });
@@ -63,7 +54,7 @@ namespace Elememory.Widgets {
         private void populate () {
             for (int y = 0; y < game.setup.length[0]; y++) {
                 for (int x = 0; x < game.setup.length[1]; x++) {
-                    TileView tile = new TileView (game.setup[y, x], this.tile_motif_paths[game.setup[y, x].motif], this.tile_backside_path);
+                    TileView tile = new TileView (game.setup[y, x], "default", game.setup[y, x].motif);
                     tiles_insensitive.connect (tile.desensitize);
                     tiles_sensitive.connect (tile.sensitize); 
                     tile.show ();

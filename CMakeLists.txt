@@ -1,4 +1,4 @@
-project (elememory)
+project (com.github.heiko-m.elememory)
 
 cmake_minimum_required (VERSION 2.6)
 
@@ -6,8 +6,6 @@ list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/src)
 
 set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
-
-set (PKGDATADIR "${DATADIR}/com.github.heiko-m.elememory")
 
 set (EXEC_NAME "com.github.heiko-m.elememory")
 set (RELEASE_NAME "eleMemory 0.2")
@@ -55,9 +53,11 @@ vala_precompile (VALA_C ${EXEC_NAME}
                  json-glib-1.0
                 )
 
-add_executable (${EXEC_NAME} ${VALA_C})
+include (gresource)
+glib_compile_resources (GLIB_RESOURCES_SCHEMES SOURCE data/tile-schemes.gresource.xml)
 
-add_subdirectory (images)
+add_executable (${EXEC_NAME} ${VALA_C} ${GLIB_RESOURCES_SCHEMES})
+
 add_subdirectory (icons)
 
 install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
