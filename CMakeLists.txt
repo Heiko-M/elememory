@@ -55,10 +55,11 @@ vala_precompile (VALA_C ${EXEC_NAME}
 
 include (gresource)
 glib_compile_resources (GLIB_RESOURCES_SCHEMES SOURCE data/tile-schemes.gresource.xml)
+glib_compile_resources (GLIB_RESOURCES_ICONS SOURCE data/icons.gresource.xml)
 
-add_executable (${EXEC_NAME} ${VALA_C} ${GLIB_RESOURCES_SCHEMES})
+add_executable (${EXEC_NAME} ${VALA_C} ${GLIB_RESOURCES_SCHEMES} ${GLIB_RESOURCES_ICONS})
 
-add_subdirectory (icons)
+add_subdirectory (data/icons)
 
 install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
 

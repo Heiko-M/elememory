@@ -59,14 +59,20 @@ namespace Elememory {
     }
 
     /**
-      * Iconnames
+      * Resource names of icons
       */
-    public const string ICONNAME_SINGLEPLAYER = "elememory-singleplayer-symbolic";
-    public const string ICONNAME_DUALPLAYER = "elememory-dualplayer-symbolic";
+    public const string RESOURCE_BASE = "/com/github/heiko-m/elememory";
+    public const string RESOURCE_ICONS = RESOURCE_BASE + "/icons";
 
-    public const string[] ICONNAMES_DUALPLAYER_ACTIVE = {
-        "elememory-dualplayer-left-symbolic",
-        "elememory-dualplayer-right-symbolic"
+    public const string ICON_SINGLEPLAYER = RESOURCE_ICONS + "/singleplayer-symbolic";
+    public const string ICON_DUALPLAYER = RESOURCE_ICONS + "/dualplayer-symbolic";
+
+    public const string[] ICONS_DUALPLAYER_ACTIVE = {
+        RESOURCE_ICONS + "/dualplayer-left-symbolic",
+        RESOURCE_ICONS + "/dualplayer-right-symbolic"
     };
-    public const string ICONNAME_SINGLEPLAYER_ACTIVE = ICONNAME_SINGLEPLAYER;
+    public const string ICON_SINGLEPLAYER_ACTIVE = ICON_SINGLEPLAYER;
+
+    public const string ICON_HIGHSCORE = RESOURCE_ICONS + "/highscore-symbolic";
+    public const string ICON_BOARD = RESOURCE_ICONS + "/board-symbolic";
 }

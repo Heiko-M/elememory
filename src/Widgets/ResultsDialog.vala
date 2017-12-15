@@ -72,9 +72,9 @@ namespace Elememory.Widgets {
                 var custom_widgets_grid = new Gtk.Grid ();
                 Gtk.Image winner_icon;
                 if (game.player_mode == PlayerMode.DUAL) {
-                    winner_icon = new Gtk.Image.from_icon_name (ICONNAMES_DUALPLAYER_ACTIVE[(Player) game.get_winner ()], Gtk.IconSize.SMALL_TOOLBAR);
+                    winner_icon = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[(Player) game.get_winner ()]);
                 } else {
-                    winner_icon = new Gtk.Image.from_icon_name (ICONNAME_SINGLEPLAYER_ACTIVE, Gtk.IconSize.SMALL_TOOLBAR);
+                    winner_icon = new Gtk.Image.from_resource (ICON_SINGLEPLAYER_ACTIVE);
                 }
                 name_entry = new Gtk.Entry ();
                 name_entry.placeholder_text = "Enter name...";

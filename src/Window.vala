@@ -76,7 +76,7 @@ namespace Elememory {
 
             game.stats_changed.connect (header.stats_indicator.update_stats);
             
-            header.highscore_switch.clicked.connect (() => {
+            header.highscore_switch.notify["selected"].connect (() => {
                 if (header.highscore_switch.selected == 1) {
                     stack.set_visible_child_name ("highscore-page");
                 } else {
@@ -125,9 +125,9 @@ namespace Elememory {
             var custom_widgets_grid = new Gtk.Grid ();
             Gtk.Image winner_icon;
             if (game.player_mode == PlayerMode.DUAL) {
-                winner_icon = new Gtk.Image.from_icon_name (ICONNAMES_DUALPLAYER_ACTIVE[winner], Gtk.IconSize.SMALL_TOOLBAR);
+                winner_icon = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[winner]);
             } else {
-                winner_icon = new Gtk.Image.from_icon_name (ICONNAME_SINGLEPLAYER_ACTIVE, Gtk.IconSize.SMALL_TOOLBAR);
+                winner_icon = new Gtk.Image.from_resource (ICON_SINGLEPLAYER_ACTIVE);
             }
             winner_icon.margin_end = 6;
             var name_entry = new Gtk.Entry ();
@@ -139,7 +139,7 @@ namespace Elememory {
             custom_widgets_grid.attach (name_entry, 1, 0, 1, 1);
             results_dialog.custom_bin.add (custom_widgets_grid);
 
-            var decline_button = results_dialog.add_button ("No, Thanks", Gtk.ResponseType.CLOSE);
+            results_dialog.add_button ("No, Thanks", Gtk.ResponseType.CLOSE);
             var accept_button = results_dialog.add_button ("Record My Name", Gtk.ResponseType.ACCEPT);
             accept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             accept_button.sensitive = false;

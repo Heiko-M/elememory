@@ -29,9 +29,11 @@ namespace Elememory.Widgets {
         private Gtk.Image[] indicators;
 
         public StatsIndicator () {
-            Object (orientation: Gtk.Orientation.HORIZONTAL,
-                    margin_top: 3,
-                    column_spacing: 8);
+            Object (
+                orientation: Gtk.Orientation.HORIZONTAL,
+                margin_top: 3,
+                column_spacing: 8
+            );
         }
 
         construct {
@@ -41,8 +43,8 @@ namespace Elememory.Widgets {
             stats_labels[Player.RIGHT] = new Gtk.Label (null);
             stats_labels[Player.RIGHT].use_markup = true;
             indicators = new Gtk.Image[2];
-            indicators[Player.LEFT] = new Gtk.Image.from_icon_name ("elememory-dualplayer-left-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-            indicators[Player.RIGHT] = new Gtk.Image.from_icon_name ("elememory-dualplayer-right-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+            indicators[Player.LEFT] = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[Player.LEFT]);
+            indicators[Player.RIGHT] = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[Player.RIGHT]);
 
             update_stats ();
         }

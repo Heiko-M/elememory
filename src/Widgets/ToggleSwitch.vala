@@ -23,12 +23,14 @@ namespace Elememory.Widgets {
     /** 
       * Switch which toggles between two states represented by different icons.
       */
-    public class ToggleSwitch : Gtk.ToolButton {
+    public class ToggleSwitch : Gtk.EventBox {
         public int selected { get; construct set; }
         public string iconname_0 { get; construct; }
         public string iconname_1 { get; construct; }
         public string? tooltip_text_0 { get; construct; }
         public string? tooltip_text_1 { get; construct; }
+        private Gtk.Image icon_0;
+        private Gtk.Image icon_1;
 
         public ToggleSwitch (string iconname_0, string iconname_1, int selected) {
             this.with_tooltip_texts (iconname_0, iconname_1, selected, null, null);
@@ -45,17 +47,20 @@ namespace Elememory.Widgets {
         }
 
         construct {
+            icon_0 = new Gtk.Image.from_resource (iconname_0);
+            icon_0.tooltip_text = tooltip_text_0;
+            icon_1 = new Gtk.Image.from_resource (iconname_1);
+            icon_1.tooltip_text = tooltip_text_1;
+
             if (selected == 0) {
-                set_icon_name (iconname_0);
-                set_tooltip_text (tooltip_text_0);
+                add (icon_0);
             } else {
-                set_icon_name (iconname_1);
-                set_tooltip_text (tooltip_text_1);
+                add (icon_1);
             }
             
-            clicked.connect (() => {
-                                    toggle ();
-                                   });
+            notify["selected"].connect (() => {
+                toggle ();
+           });
         }
 
         /**
@@ -63,14 +68,21 @@ namespace Elememory.Widgets {
           */
         public void toggle () {
             if (selected == 0) {
-                set_icon_name (iconname_1);
-                set_tooltip_text (tooltip_text_1);
-                selected = 1;
+                remove (get_child ());
+                add (icon_0);
             } else {
-                set_icon_name (iconname_0);
-                set_tooltip_text (tooltip_text_0);
-                selected = 0;
+                remove (get_child ());
+                add (icon_1);
             }
+            show_all ();
+        }
+
+        public override bool button_press_event (Gdk.EventButton event) {
+            if (event.type == Gdk.EventType.BUTTON_PRESS) {
+                selected = selected == 0 ? 1 : 0;
+            }
+
+            return true;
         }
     }
 }

@@ -36,8 +36,8 @@ namespace Elememory.Widgets {
         }
 
         construct {
-            player_mode_switch = new ToggleSwitch.with_tooltip_texts ("elememory-dualplayer-symbolic", "elememory-singleplayer-symbolic", 0, "Dualplayer", "Singleplayer");
-            highscore_switch = new ToggleSwitch.with_tooltip_texts ("elememory-highscore-symbolic", "elememory-board-symbolic", 0, "Highscore", "Game");
+            player_mode_switch = new ToggleSwitch.with_tooltip_texts (ICON_DUALPLAYER, ICON_SINGLEPLAYER, 0, "Dualplayer", "Singleplayer");
+            highscore_switch = new ToggleSwitch.with_tooltip_texts (ICON_HIGHSCORE, ICON_BOARD, 0, "Highscore", "Game");
             stack = new Gtk.Stack ();
             stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             stats_indicator = new StatsIndicator ();
@@ -53,7 +53,7 @@ namespace Elememory.Widgets {
 
             stats_indicator.update_stats ();
 
-            highscore_switch.clicked.connect (() => {
+            highscore_switch.notify["selected"].connect (() => {
                 if (highscore_switch.selected == 1) {
                     stack.set_visible_child_name ("highscore-title");
                     player_mode_switch.sensitive = false;

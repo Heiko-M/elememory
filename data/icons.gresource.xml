@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+    <gresource prefix="/com/github/heiko-m/elememory/icons">
+        <file alias="singleplayer-symbolic" compressed="false">icons/16/singleplayer-symbolic.svg</file>
+        <file alias="dualplayer-symbolic" compressed="false">icons/16/dualplayer-symbolic.svg</file>
+        <file alias="highscore-symbolic" compressed="false">icons/16/highscore-symbolic.svg</file>
+        <file alias="board-symbolic" compressed="false">icons/16/board-symbolic.svg</file>
+        <file alias="dualplayer-left-symbolic" compressed="false">icons/16/dualplayer-left-symbolic.svg</file>
+        <file alias="dualplayer-right-symbolic" compressed="false">icons/16/dualplayer-right-symbolic.svg</file>
+    </gresource>
+</gresources>
