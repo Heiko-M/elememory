@@ -24,7 +24,7 @@ namespace Elememory.Widgets {
       * Indicator panel for single and dual player draw statistics and turn indicator.
       */
     public class StatsIndicator : Gtk.Grid {
-        private Models.Game game_model = Models.Game.get_instance ();
+        private Models.Game game = Models.Game.get_instance ();
         private Gtk.Label[] stats_labels;
         private Gtk.Image[] indicators;
 
@@ -53,12 +53,12 @@ namespace Elememory.Widgets {
         public void update_stats () {
             remove_row (0);
 
-            stats_labels[Player.LEFT].label = "<b>%d pairs</b> out of <b>%d draws</b>".printf (game_model.pairs[Player.LEFT], game_model.draws[Player.LEFT]);
-            stats_labels[Player.RIGHT].label = "<b>%d pairs</b> out of <b>%d draws</b>".printf (game_model.pairs[Player.RIGHT], game_model.draws[Player.RIGHT]);
+            stats_labels[Player.LEFT].label = "<b>%d pairs</b> out of <b>%d draws</b>".printf (game.pairs[Player.LEFT], game.draws[Player.LEFT]);
+            stats_labels[Player.RIGHT].label = "<b>%d pairs</b> out of <b>%d draws</b>".printf (game.pairs[Player.RIGHT], game.draws[Player.RIGHT]);
 
             add (stats_labels[Player.LEFT]);
-            if (game_model.player_mode == PlayerMode.DUAL) {
-                add (indicators[game_model.active_player]);
+            if (game.player_mode == PlayerMode.DUAL) {
+                add (indicators[game.active_player]);
                 add (stats_labels[Player.RIGHT]);
             }
             show_all ();
