@@ -29,8 +29,7 @@ namespace Elememory.Widgets {
         public string iconname_1 { get; construct; }
         public string? tooltip_text_0 { get; construct; }
         public string? tooltip_text_1 { get; construct; }
-        private Gtk.Image icon_0;
-        private Gtk.Image icon_1;
+        private Gtk.Image[] icons;
 
         public ToggleSwitch (string iconname_0, string iconname_1, int selected) {
             this.with_tooltip_texts (iconname_0, iconname_1, selected, null, null);
@@ -47,39 +46,22 @@ namespace Elememory.Widgets {
         }
 
         construct {
-            icon_0 = new Gtk.Image.from_resource (iconname_0);
-            icon_0.tooltip_text = tooltip_text_0;
-            icon_1 = new Gtk.Image.from_resource (iconname_1);
-            icon_1.tooltip_text = tooltip_text_1;
+            icons = new Gtk.Image[2];
+            icons[0] = new Gtk.Image.from_resource (iconname_0);
+            icons[0].tooltip_text = tooltip_text_0;
+            icons[1] = new Gtk.Image.from_resource (iconname_1);
+            icons[1].tooltip_text = tooltip_text_1;
 
-            if (selected == 0) {
-                add (icon_0);
-            } else {
-                add (icon_1);
-            }
-            
-            notify["selected"].connect (() => {
-                toggle ();
-           });
-        }
-
-        /**
-          * Toggle switch state.
-          */
-        public void toggle () {
-            if (selected == 0) {
-                remove (get_child ());
-                add (icon_0);
-            } else {
-                remove (get_child ());
-                add (icon_1);
-            }
-            show_all ();
+            add (icons[selected]);
         }
 
         public override bool button_press_event (Gdk.EventButton event) {
             if (event.type == Gdk.EventType.BUTTON_PRESS) {
                 selected = selected == 0 ? 1 : 0;
+
+                remove (get_child ());
+                add (icons[selected]);
+                show_all ();
             }
 
             return true;
