@@ -44,26 +44,33 @@ namespace Elememory {
             
             highscores[PlayerMode.SINGLE] = new Models.Highscore ("single_highscore.json");
             highscores[PlayerMode.DUAL] = new Models.Highscore ("dual_highscore.json");
+
             game = Models.Game.get_instance ();
+            game.player_mode = (PlayerMode) settings.get_enum ("player-mode");
 
             // HEADER BAR
             header = new Widgets.Header ();
+            header.player_mode_switch.selected = settings.get_enum ("player-mode");
             set_titlebar (header);
 
             // WINDOW CONTENT
-            stack = new Gtk.Stack ();
-            stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             board = new Widgets.Board ();
-            highscore_page = new Gtk.Grid ();
-            highscore_page.column_homogeneous = true;
+
             highscore_views[PlayerMode.SINGLE] = new Widgets.HighscoreView (highscores[PlayerMode.SINGLE], "Single player");
             highscore_views[PlayerMode.DUAL] = new Widgets.HighscoreView (highscores[PlayerMode.DUAL], "Dual player");
             
+            highscore_page = new Gtk.Grid ();
+            highscore_page.column_homogeneous = true;
             highscore_page.add (highscore_views[PlayerMode.SINGLE]);
             highscore_page.add (highscore_views[PlayerMode.DUAL]);
+
+            stack = new Gtk.Stack ();
+            stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
             stack.add_named (board, "board");
             stack.add_named (highscore_page, "highscore-page");
+
             add (stack);
+
             show_all ();
 
             // CONNECTIONS
@@ -198,6 +205,8 @@ namespace Elememory {
             get_position (out x, out y);
             string[] position = {x.to_string (), y.to_string ()};
             settings.set_strv ("position", position);
+
+            settings.set_enum ("player-mode", game.player_mode);
 
             Gtk.main_quit ();
             return false;

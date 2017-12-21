@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist>
+    <enum id="player-modes">
+        <value nick="single" value="0" />
+        <value nick="dual" value="1" />
+    </enum>
     <schema path="/com/github/heiko-m/elememory/" id="com.github.heiko-m.elememory">
+        <key name="player-mode" enum="player-modes">
+            <default>"single"</default>
+            <summary>Player mode</summary>
+            <description>Most recently played player mode</description>
+        </key>
         <key name="position" type="as">
             <default>['']</default>
             <summary>Window position</summary>
