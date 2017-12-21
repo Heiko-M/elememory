@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema path="/com/github/heiko-m/elememory/" id="com.github.heiko-m.elememory">
+        <key name="position" type="as">
+            <default>['']</default>
+            <summary>Window position</summary>
+            <description>Most recent x and y positions of eleMemory</description>
+        </key>
+    </schema>
+</schemalist>

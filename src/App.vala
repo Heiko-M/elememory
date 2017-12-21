@@ -20,21 +20,20 @@
 */
 
 namespace Elememory {
-    public class App : Granite.Application {
-        private Window window;
-
+    public class App : Gtk.Application {
         public App () {
-            Object (application_id: "com.github.heiko-m.elememory",
-                    flags: ApplicationFlags.FLAGS_NONE);
+            Object (
+                application_id: "com.github.heiko-m.elememory",
+                flags: ApplicationFlags.FLAGS_NONE
+            );
         }
 
         public override void activate () {
-            window = new Window();
+            var window = new Window (application_id);
         }
 
         public static int main (string[] args) {
-            Gtk.init (ref args);
-            var app = new Elememory.App ();
+            var app = new App ();
             return app.run (args);
         }
     }

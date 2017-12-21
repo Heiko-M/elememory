@@ -25,6 +25,7 @@ namespace Elememory {
       * signals.
       */
     public class Window : Gtk.Window {
+        private GLib.Settings settings;
         private Models.Game game;
         private Widgets.Header header;
         private Gtk.Stack stack;
@@ -33,8 +34,13 @@ namespace Elememory {
         private Gtk.Grid highscore_page;
         private Widgets.HighscoreView[] highscore_views = new Widgets.HighscoreView[2];
 
-        public Window () {
-            window_position = Gtk.WindowPosition.CENTER;
+        public Window (string application_id) {
+            settings = new Settings (application_id);
+
+            var position = settings.get_strv ("position");
+            if (position.length == 2) {
+                move (int.parse (position[0]), int.parse (position[1]));
+            }
             
             highscores[PlayerMode.SINGLE] = new Models.Highscore ("single_highscore.json");
             highscores[PlayerMode.DUAL] = new Models.Highscore ("dual_highscore.json");
@@ -188,6 +194,11 @@ namespace Elememory {
         }
 
         public bool on_delete_event () {
+            int x, y;
+            get_position (out x, out y);
+            string[] position = {x.to_string (), y.to_string ()};
+            settings.set_strv ("position", position);
+
             Gtk.main_quit ();
             return false;
         }
