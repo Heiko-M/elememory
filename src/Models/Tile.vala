@@ -35,8 +35,5 @@ namespace Elememory.Models {
                 present_on_board: true
                 );
         }
-
-        construct {
-        }
     }
 }

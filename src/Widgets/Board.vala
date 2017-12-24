@@ -26,8 +26,6 @@ namespace Elememory.Widgets {
       */
     public class Board : Gtk.Grid {
         public Models.Game game;
-        public signal void tiles_insensitive ();
-        public signal void tiles_sensitive ();
 
         public Board () {
             Object (
@@ -43,9 +41,6 @@ namespace Elememory.Widgets {
             game = Models.Game.get_instance ();
 
             populate ();
-
-            game.freeze.connect (() => { tiles_insensitive (); });
-            game.resume.connect (() => { tiles_sensitive (); });
         }
 
         /**
@@ -55,8 +50,8 @@ namespace Elememory.Widgets {
             for (int y = 0; y < game.setup.length[0]; y++) {
                 for (int x = 0; x < game.setup.length[1]; x++) {
                     TileView tile = new TileView (game.setup[y, x], "default", game.setup[y, x].motif);
-                    tiles_insensitive.connect (tile.desensitize);
-                    tiles_sensitive.connect (tile.sensitize); 
+                    game.freeze.connect (tile.desensitize);
+                    game.resume.connect (tile.sensitize); 
                     tile.show ();
                     attach (tile, x, y, 1, 1);
                 }

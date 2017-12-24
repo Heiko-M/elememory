@@ -49,8 +49,10 @@ namespace Elememory.Widgets {
         construct {
             motif_side.set_from_resource ("/com/github/heiko-m/elememory/tile-schemes/%s/%d.png".printf(scheme, motif));
             motif_side.show ();
+
             backside.set_from_resource ("/com/github/heiko-m/elememory/tile-schemes/%s/back.png".printf(scheme));
             backside.show ();
+
             add (backside);
 
             button_press_handler_id = button_press_event.connect (() => {
@@ -94,6 +96,7 @@ namespace Elememory.Widgets {
         }
 
         public void desensitize () {
+        //TODO: check if button_press_handler_id still exists to omit warnings
             SignalHandler.block (this, button_press_handler_id);
         }
 

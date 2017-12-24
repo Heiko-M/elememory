@@ -27,9 +27,7 @@ namespace Elememory.Widgets {
     public class Header : Gtk.HeaderBar {
         public ToggleSwitch player_mode_switch;
         public ToggleSwitch highscore_switch;
-        public Gtk.Stack stack;
         public StatsIndicator stats_indicator;
-        private Gtk.Label highscore_title;
 
         public Header () {
             Object (show_close_button: true);
@@ -37,21 +35,24 @@ namespace Elememory.Widgets {
 
         construct {
             player_mode_switch = new ToggleSwitch.with_tooltip_texts (ICON_DUALPLAYER, ICON_SINGLEPLAYER, 0, "Dualplayer", "Singleplayer");
+            
             highscore_switch = new ToggleSwitch.with_tooltip_texts (ICON_HIGHSCORE, ICON_BOARD, 0, "Highscore", "Game");
-            stack = new Gtk.Stack ();
-            stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+
             stats_indicator = new StatsIndicator ();
-            highscore_title = new Gtk.Label ("");
+            stats_indicator.update_stats ();
+
+            var highscore_title = new Gtk.Label ("");
+
+            var stack = new Gtk.Stack ();
+            stack.set_transition_type (Gtk.StackTransitionType.SLIDE_LEFT_RIGHT);
+            stack.add_named (stats_indicator, "stats-indicator");
+            stack.add_named (highscore_title, "highscore-title");
 
             pack_start (player_mode_switch);
             pack_end (highscore_switch);
-            stack.add_named (stats_indicator, "stats-indicator");
-            stack.add_named (highscore_title, "highscore-title");
             custom_title = stack; 
 
             get_style_context ().add_class (Gtk.STYLE_CLASS_FLAT);
-
-            stats_indicator.update_stats ();
 
             highscore_switch.notify["selected"].connect (() => {
                 if (highscore_switch.selected == 1) {

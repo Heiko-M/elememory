@@ -62,6 +62,7 @@ namespace Elememory.Widgets {
                     if (i == 0) {
                         var placeholder_label = new Gtk.Label ("<i>n/a</i>");
                         placeholder_label.use_markup = true;
+
                         attach (placeholder_label, 0, 1, 3, 1);
                     }
                     break;
@@ -69,9 +70,11 @@ namespace Elememory.Widgets {
                     var rank_label = new Gtk.Label ("%d.".printf (i + 1));
                     rank_label.margin_end = 12;
                     rank_label.halign = Gtk.Align.END;
+
                     var name_label = new Gtk.Label ("%s".printf (highscore.ranking[i].name));
                     name_label.margin_end = 12;
                     name_label.halign = Gtk.Align.START;
+
                     var score_label = new Gtk.Label ("%d".printf (highscore.ranking[i].score));
                     score_label.margin_end = 8;
                     score_label.halign = Gtk.Align.END;

@@ -61,6 +61,7 @@ namespace Elememory.Widgets {
 
                 remove (get_child ());
                 add (icons[selected]);
+
                 show_all ();
             }
 

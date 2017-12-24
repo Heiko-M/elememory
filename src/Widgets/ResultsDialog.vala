@@ -50,7 +50,6 @@ namespace Elememory.Widgets {
         construct {
             var game = Models.Game.get_instance ();
             
-
             if (game.player_mode == PlayerMode.SINGLE) {
                 primary_text = "Well played, you made it into the highscore!";
                 secondary_text = "%d pairs in %d draws, that's a score of <b>%d</b>. Enter your name to be recorded in the highscore.".printf (game.pairs[Player.LEFT], game.draws[Player.LEFT], score);
@@ -67,15 +66,16 @@ namespace Elememory.Widgets {
                 }
             }
 
-
             if (show_name_entry) {
                 var custom_widgets_grid = new Gtk.Grid ();
+                
                 Gtk.Image winner_icon;
                 if (game.player_mode == PlayerMode.DUAL) {
                     winner_icon = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[(Player) game.get_winner ()]);
                 } else {
                     winner_icon = new Gtk.Image.from_resource (ICON_SINGLEPLAYER_ACTIVE);
                 }
+
                 name_entry = new Gtk.Entry ();
                 name_entry.placeholder_text = "Enter name...";
                 name_entry.max_length = 20;
@@ -83,6 +83,7 @@ namespace Elememory.Widgets {
 
                 custom_widgets_grid.attach (winner_icon, 0, 0, 1, 1);
                 custom_widgets_grid.attach (name_entry, 1, 0, 1, 1);
+
                 custom_bin.add (custom_widgets_grid);
             }
 

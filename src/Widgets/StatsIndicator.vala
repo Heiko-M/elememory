@@ -42,6 +42,7 @@ namespace Elememory.Widgets {
             stats_labels[Player.LEFT].use_markup = true;
             stats_labels[Player.RIGHT] = new Gtk.Label (null);
             stats_labels[Player.RIGHT].use_markup = true;
+
             indicators = new Gtk.Image[2];
             indicators[Player.LEFT] = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[Player.LEFT]);
             indicators[Player.RIGHT] = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[Player.RIGHT]);
@@ -59,10 +60,12 @@ namespace Elememory.Widgets {
             stats_labels[Player.RIGHT].label = "<b>%d pairs</b> out of <b>%d draws</b>".printf (game.pairs[Player.RIGHT], game.draws[Player.RIGHT]);
 
             add (stats_labels[Player.LEFT]);
+
             if (game.player_mode == PlayerMode.DUAL) {
                 add (indicators[game.active_player]);
                 add (stats_labels[Player.RIGHT]);
             }
+
             show_all ();
         }
     }

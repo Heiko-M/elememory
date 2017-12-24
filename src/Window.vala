@@ -135,7 +135,6 @@ namespace Elememory {
             results_dialog.destroy_with_parent = true;
             results_dialog.modal = true;
 
-            var custom_widgets_grid = new Gtk.Grid ();
             Gtk.Image winner_icon;
             if (game.player_mode == PlayerMode.DUAL) {
                 winner_icon = new Gtk.Image.from_resource (ICONS_DUALPLAYER_ACTIVE[winner]);
@@ -143,21 +142,22 @@ namespace Elememory {
                 winner_icon = new Gtk.Image.from_resource (ICON_SINGLEPLAYER_ACTIVE);
             }
             winner_icon.margin_end = 6;
+
             var name_entry = new Gtk.Entry ();
             name_entry.placeholder_text = "Enter name";
             name_entry.max_length = 20;
             name_entry.activates_default = true;
 
+            var custom_widgets_grid = new Gtk.Grid ();
             custom_widgets_grid.attach (winner_icon, 0, 0, 1, 1);
             custom_widgets_grid.attach (name_entry, 1, 0, 1, 1);
-            results_dialog.custom_bin.add (custom_widgets_grid);
 
+            results_dialog.custom_bin.add (custom_widgets_grid);
             results_dialog.add_button ("No, Thanks", Gtk.ResponseType.CLOSE);
             var accept_button = results_dialog.add_button ("Record My Name", Gtk.ResponseType.ACCEPT);
             accept_button.get_style_context ().add_class (Gtk.STYLE_CLASS_SUGGESTED_ACTION);
             accept_button.sensitive = false;
             results_dialog.set_default (accept_button);
-
             results_dialog.show_all ();
 
             name_entry.changed.connect (() => {

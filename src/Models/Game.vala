@@ -178,7 +178,6 @@ namespace Elememory.Models {
             } else {
                 // In dual mode, odd number of tile pairs should always result in a winner.
                 assert_not_reached ();
-                return null;
             }
         }
 
