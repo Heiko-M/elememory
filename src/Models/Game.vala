@@ -43,7 +43,7 @@ namespace Elememory.Models {
         public signal void finished (Player winner, int score);
         public signal void stats_changed ();
 
-        public Player active_player { get; set; default = (Player) GLib.Random.int_range (0, 2); }
+        public Player active_player { get; set; default = Player.any (); }
         public int[] draws { get; private set; }
         public int[] pairs { get; private set; }
         public Tile[,] setup { get; set; }
@@ -76,10 +76,11 @@ namespace Elememory.Models {
           */
         public void new_setup () {
             setup = shuffled_motifs (BOARD_WIDTH[player_mode], BOARD_HEIGHT[player_mode]);
+
             if (player_mode == PlayerMode.SINGLE) {
                 active_player = Player.LEFT;
             } else {
-                active_player = (Player) GLib.Random.int_range (0, 2);
+                active_player = Player.any ();
             }
             
             reset_stats ();

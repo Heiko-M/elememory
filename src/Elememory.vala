@@ -46,6 +46,10 @@ namespace Elememory {
             }
         }
 
+        public static Player any () {
+            return (Player) GLib.Random.int_range (0, 2);
+        }
+
         public string to_string () {
             switch (this) {
                 case LEFT:
