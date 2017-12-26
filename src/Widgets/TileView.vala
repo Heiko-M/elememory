@@ -96,8 +96,9 @@ namespace Elememory.Widgets {
         }
 
         public void desensitize () {
-        //TODO: check if button_press_handler_id still exists to omit warnings
-            SignalHandler.block (this, button_press_handler_id);
+            if (SignalHandler.is_connected (this, button_press_handler_id)) {
+                SignalHandler.block (this, button_press_handler_id);
+            }
         }
 
         public void sensitize () {
