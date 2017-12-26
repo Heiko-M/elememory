@@ -59,6 +59,12 @@ namespace Elememory {
     }
 
     /**
+      * Board sizes
+      */
+    public const int[] BOARD_WIDTH = {6, 9};
+    public const int[] BOARD_HEIGHT = {4, 6};
+
+    /**
       * Resource names of icons
       */
     public const string RESOURCE_BASE = "/com/github/heiko-m/elememory";

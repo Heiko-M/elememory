@@ -75,11 +75,10 @@ namespace Elememory.Models {
           * resets the stats.
           */
         public void new_setup () {
+            setup = shuffled_motifs (BOARD_WIDTH[player_mode], BOARD_HEIGHT[player_mode]);
             if (player_mode == PlayerMode.SINGLE) {
-                setup = shuffled_motifs (6, 4);
                 active_player = Player.LEFT;
             } else {
-                setup = shuffled_motifs (9, 6);
                 active_player = (Player) GLib.Random.int_range (0, 2);
             }
             
