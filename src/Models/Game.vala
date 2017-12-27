@@ -75,7 +75,7 @@ namespace Elememory.Models {
           * resets the stats.
           */
         public void new_setup () {
-            setup = shuffled_motifs (BOARD_WIDTH[player_mode], BOARD_HEIGHT[player_mode]);
+            setup = shuffled_motifs (BOARD_WIDTHS[player_mode], BOARD_HEIGHTS[player_mode]);
 
             if (player_mode == PlayerMode.SINGLE) {
                 active_player = Player.LEFT;
@@ -219,12 +219,15 @@ namespace Elememory.Models {
           */
         private Tile[,] shuffled_motifs (int width, int height) {
             int[] tile_motifs = new int[width * height / 2];
-            int[] motif_taken = new int[width * height / 2];
+            int[] motif_taken = new int[SCHEME_SIZE];
             Tile[,] arrangement = new Tile[height, width];
 
-            for (int i = 0; i < tile_motifs.length; i++) {
-                tile_motifs[i] = i;
-                motif_taken[i] = 0;
+            if (tile_motifs.length < SCHEME_SIZE) {
+                tile_motifs = motif_subset (tile_motifs.length, SCHEME_SIZE);
+            } else {
+                for (int i = 0; i < tile_motifs.length; i++) {
+                    tile_motifs[i] = i;
+                }
             }
 
             for (int y = 0; y < height; y++) {
@@ -241,6 +244,50 @@ namespace Elememory.Models {
             }
 
             return arrangement;
+        }
+
+        /**
+          * Returns an array of n randomly picked, unique integers
+          * between 0 and total - 1.
+          *
+          * @param n Number of integers to be picked.
+          * @param total Number of available integers.
+          * @return Array of randomly picked, unique integers.
+          */
+        private int[] motif_subset (int n, int total) {
+            var subset = new int[n];
+
+            for (int i = 0; i < subset.length; i++) {
+                subset[i] = -1;
+            }
+
+            for (int i = 0; i < subset.length; i++) {
+                int pick = -1;
+
+                do {
+                    pick = GLib.Random.int_range (0, total);
+                } while (is_present_in (pick, subset));
+
+                subset[i] = pick;
+            }
+
+            return subset;
+        }
+
+        /**
+          * Returns true if the integer query is present in the collection.
+          *
+          * @param query The integer query.
+          * @param collection The collection of integers.
+          * @return true if query in collection, otherwise false.
+          */
+        private bool is_present_in (int query, int[] collection) {
+            foreach (int element in collection) {
+                if (element == query) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -63,10 +63,11 @@ namespace Elememory {
     }
 
     /**
-      * Board sizes
+      * Game characteristics
       */
-    public const int[] BOARD_WIDTH = {6, 9};
-    public const int[] BOARD_HEIGHT = {4, 6};
+    public const int SCHEME_SIZE = 27;
+    public const int[] BOARD_WIDTHS = {6, 9};
+    public const int[] BOARD_HEIGHTS = {4, 6};
 
     /**
       * Resource names of icons
