@@ -1,0 +1,16 @@
+Source: com.github.heiko-m.elememory
+Section: x11
+Priority: extra
+Maintainer: Heiko Müller <mue.heiko@web.de>
+Build-Depends: cmake (>= 2.8),
+               debhelper (>= 9),
+               libgtk-3-dev,
+               libgranite-dev,
+               valac (>= 0.26)
+Standards-Version: 3.9.3
+
+Package: com.github.heiko-m.elememory
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Memory game
+ Play memory by yourself or locally against a friend.
